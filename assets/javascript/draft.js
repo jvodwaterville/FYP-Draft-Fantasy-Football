@@ -252,18 +252,39 @@ function selectPlayer(id)
 {
     //extract players id from id passed in ("select"+players id)
     var playerId = id.substr(6);
-    
-    //get players name
-    var playerName = document.getElementById(playerId).innerHTML;
+    //get players position
+    var position = document.getElementById('position'+playerId).innerHTML;
     
     var theDiv = document.getElementById('selectionAlertBox');
     
-    var content = '<p>Confirm Selection of ' + playerName + '</p> <button onclick="addPlayerToSquad('+playerId+')">Confirm</button><button onclick="cancelSelection()">Cancel</button>';
+    if(position == 'GK' && gks == 0)
+    { 
+        var content = '<p>You already have 2 Goalkeepers</p> <button onclick="cancelSelection()">Ok</button>';
+    }
+    else if (position == 'DF' && dfs == 0)
+    {
+        var content = '<p>You already have 6 Defenders</p> <button onclick="cancelSelection()">Ok</button>';
+    }
+    else if (position == 'MF' && mfs == 0)
+    {
+        var content = '<p>You already have 6 Midfielders</p> <button onclick="cancelSelection()">Ok</button>';
+    }
+    else if (position == 'FW' && fws == 0)
+    {
+        var content = '<p>You already have 4 Forwards</p> <button onclick="cancelSelection()">Ok</button>';
+    }
+    else
+    {
+        //get players name
+        var playerName = document.getElementById(playerId).innerHTML;
+
+        var content = '<p>Confirm Selection of ' + playerName + '</p> <button onclick="addPlayerToSquad('+playerId+')">Confirm</button><button onclick="cancelSelection()">Cancel</button>';
+    }
     
     theDiv.innerHTML = content;
-    
+
     document.getElementById('wrapper').style.opacity = '0.25';
-    
+
     theDiv.style.display = "block";
     
 }
