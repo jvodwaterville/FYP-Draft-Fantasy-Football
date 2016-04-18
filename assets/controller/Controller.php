@@ -130,7 +130,7 @@ class Controller {
             {
                 include('assets/view/draft.php');
             }
-            else if (isset($_GET['checkdraftpcik']))        
+            else if (isset($_GET['checkdraftpick']))        
             {
                 $this->draft->checkDraftPick();
             }
@@ -157,6 +157,10 @@ class Controller {
             else if (isset($_GET['addplayertosquad']))        
             {
                 $this->draft->addPlayerToSquad();
+            }
+            else if (isset($_GET['selectrandomplayer']))        
+            {
+                $this->draft->selectRandomPlayer();
             }
             else if (isset($_GET['test']))        
             {

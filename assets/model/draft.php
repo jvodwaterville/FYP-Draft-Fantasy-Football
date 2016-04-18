@@ -482,6 +482,305 @@ class draft
         echo json_encode($draftPickArray);
     }
     
+    //selects random player when a players draft time runs out
+    public function selectRandomPlayer()
+    {
+        //set number of players to pick from
+        $num_rec_per_page=25;
+        $start_from = 0;
+        
+        $passedInPickNumber = $_GET['picknumber'];
+        
+        //to get managers team and league details
+        $squadId = $_GET['squadid'];
+        $teamsLeagueResult = $this->database->_getTeamsLeague($squadId);
+        $teamsLeagueRow = $teamsLeagueResult->fetch_assoc();
+        $leagueid = $teamsLeagueRow['leagueid'];
+        
+        //get draft details
+        $draft = $this->database->getDraftDetails($squadId);
+        $draftRow = $draft->fetch_assoc();
+        $draftId = $draftRow['id'];     
+        $pickTeam = $draftRow['teamsPick'];     
+        $pickNo = $draftRow['pickNumber']; 
+        
+        if($pickNo == $passedInPickNumber)
+        {
+            //move to next pick in draft
+            $this -> moveToNextPick($leagueid, $squadId);
+
+            //get number of players in per position in squad
+            $currentSquadResult = $this->database->_loadSquad($squadId);
+            $teamRow = $currentSquadResult->fetch_assoc();
+            //place holders for count of players required per position
+            $gks=0; $dfs=0; $mfs=0; $fws=0;
+
+            //count goalkeepers
+            for($i=1; $i<=2; $i++)
+            {
+                $id = "g" . $i;
+
+                if($teamRow[$id] != 0)
+                {
+                    $gks++;
+                }
+            }
+
+            //loop through starting players and count positions
+            for($i=1; $i<=10; $i++)
+            {
+                $id = "st" . $i;
+
+                if($teamRow[$id] != 0)
+                {
+                    //get players details
+                    $player = $this->database->_getSinglePlayerDetails($teamRow[$id], 1);
+                    $playerRow = $player->fetch_assoc();
+
+                    //check what players position is and adjust positions count accordingly
+                    if($playerRow['position'] == 'Defender')
+                    {
+                        $dfs++;
+                    }
+                    else if ($playerRow['position'] == 'Midfielder')
+                    {
+                        $mfs++;
+                    }
+                    else if ($playerRow['position'] == 'Forward')
+                    {
+                        $fws++;
+                    }
+                }
+            }
+
+            //loop through subs and count positions
+            for($i=1; $i<=3; $i++)
+            {
+                $id = "s" . $i;
+
+                if($teamRow[$id] != 0)
+                {
+                    //get players details
+                    $player = $this->database->_getSinglePlayerDetails($teamRow[$id], 1);
+                    $playerRow = $player->fetch_assoc();
+
+                    //check what players position is and adjust positions count accordingly
+                    if($playerRow['position'] == 'Defender')
+                    {
+                        $dfs++;
+                    }
+                    else if ($playerRow['position'] == 'Midfielder')
+                    {
+                        $mfs++;
+                    }
+                    else
+                    {
+                        $fws++;
+                    }
+                }
+            }
+
+            //loop through reserves and count positions
+            for($i=1; $i<=3; $i++)
+            {
+                $id = "r" . $i;
+
+                if($teamRow[$id] != 0)
+                {
+                    //get players details
+                    $player = $this->database->_getSinglePlayerDetails($teamRow[$id], 1);
+                    $playerRow = $player->fetch_assoc();
+
+                    //check what players position is and adjust positions count accordingly
+                    if($playerRow['position'] == 'Defender')
+                    {
+                        $dfs++;
+                    }
+                    else if ($playerRow['position'] == 'Midfielder')
+                    {
+                        $mfs++;
+                    }
+                    else
+                    {
+                        $fws++;
+                    }
+                }
+            }
+
+            //get all players that ARE in teams in the league
+            $result =  $this->database->_getLeaguePlayers($leagueid);
+
+            //get string of all players id currently in league to be passed
+            $notThesePlayers = "";
+
+            //get first player
+            $row = $result->fetch_assoc();
+            $notThesePlayers = $notThesePlayers. "player.id != '". $row['id'] ."'";
+
+            //get the rest of the players
+            while($row = $result->fetch_assoc())
+            {
+                $notThesePlayers = $notThesePlayers. "and player.id != '". $row['id'] ."'";
+            }   
+
+            //set search options
+            $orderByString = "order by totalPoints desc, value desc";
+            $premTeamString = "";
+            $nameString = ""; 
+            $positionString = ""; 
+
+            //array to hold potential positions
+            $positionsAvailable = array();
+
+            //if positions aren't full add to positions available array
+            if($gks != 2)
+            {
+                array_push($positionsAvailable,"Goalkeeper");
+            }
+
+            if($dfs != 6)
+            {
+                array_push($positionsAvailable,"Defender");
+            }
+
+            if($mfs != 6)
+            {
+                array_push($positionsAvailable,"Midfielder");
+            }
+
+            if($fws != 4)
+            {
+                array_push($positionsAvailable,"Forward");
+            }
+
+            $arrayLength = sizeof($positionsAvailable) - 1;
+
+            //pick random number to select position from array
+            $pickThisPosition = rand(0,$arrayLength);
+
+            //set position string for query
+            $positionString = "and position = '". $positionsAvailable[$pickThisPosition] ."'"; 
+
+            //generate random number to select random player from returned results
+            $pickThisPlayer = rand(0,24);
+            //placeholder for what number player the loop is on
+            $loopNumber = 0;
+
+            //get all free agents in the league, option to filter by position
+            $freeAgentResult =  $this->database->_getLeagueFreeAgents($notThesePlayers, $positionString, $premTeamString, $nameString, $orderByString, $start_from, $num_rec_per_page);
+
+            while ($freeAgentRow = $freeAgentResult->fetch_assoc()) 
+            {
+                if($loopNumber == $pickThisPlayer)
+                {
+                    //get players if
+                    $playerId = $freeAgentRow['id'];
+                    //get players position
+                    $playerPosition = $freeAgentRow['position'];
+
+                    //placeHolder to hold squad position player will be added to
+                    $squadPosition = "";
+
+                    //add player to current squad based on position and how many players are already in squad by position
+                    if($playerPosition == "Goalkeeper")
+                    {
+                        if($gks == 0)
+                        {
+                            $squadPosition = "g1";
+                        }
+                        else
+                        {
+                            $squadPosition = "g2";
+                        }
+                    }
+                    else if($playerPosition == "Defender")
+                    {
+                        if($dfs == 0)
+                        {
+                            $squadPosition = "st1";
+                        }
+                        else if($dfs == 1)
+                        {
+                            $squadPosition = "st2";
+                        }
+                        else if($dfs == 2)
+                        {
+                            $squadPosition = "st3";
+                        }
+                        else if($dfs == 3)
+                        {
+                            $squadPosition = "st4";
+                        }
+                        else if($dfs == 4)
+                        {
+                            $squadPosition = "s1";
+                        }
+                        else if($dfs == 5)
+                        {
+                            $squadPosition = "r1";
+                        }
+                    }
+                    else if($playerPosition == "Midfielder")
+                    {
+                        if($mfs == 0)
+                        {
+                            $squadPosition = "st5";
+                        }
+                        else if($mfs == 1)
+                        {
+                            $squadPosition = "st6";
+                        }
+                        else if($mfs == 2)
+                        {
+                            $squadPosition = "st7";
+                        }
+                        else if($mfs == 3)
+                        {
+                            $squadPosition = "st8";
+                        }
+                        else if($mfs == 4)
+                        {
+                            $squadPosition = "s2";
+                        }
+                        else if($mfs == 5)
+                        {
+                            $squadPosition = "r2";
+                        }
+                    }
+                    else
+                    {
+                        if($fws == 0)
+                        {
+                            $squadPosition = "st9";
+                        }
+                        else if($fws == 1)
+                        {
+                            $squadPosition = "st10";
+                        }
+                        else if($fws == 2)
+                        {
+                            $squadPosition = "s3";
+                        }
+                        else if($fws == 3)
+                        {
+                            $squadPosition = "r3";
+                        }
+                    }
+
+                    //add player to squad list in database
+                    $this->database->addDraftSelection($squadId, $playerId, $squadPosition);
+                    //add selection to draft history in dp
+                    $this->database->addDraftSelectionHistory($squadId, $playerId, $draftId);
+                }
+                $loopNumber++;
+            }
+        }
+        else
+        {
+            //do nothing
+        }
+    }
+    
     //gets all the free agents in the league
     function getAvailablePlayers()
     {

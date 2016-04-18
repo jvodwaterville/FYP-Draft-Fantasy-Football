@@ -82,6 +82,17 @@ function countDownTimer()
     if(timeLeft == 0)
         {
             clearInterval(countDown);
+            $.ajax({
+            url: 'index.php?selectrandomplayer=true&squadid='+teamCurrentlyPicking+'&picknumber='+draftPickNumber ,
+            cache: false,
+            success: function(data)
+            {
+                checkPick();
+            },
+        });
+            countDownTime = 0;
+            countDown = setInterval(countDownTimer,1000);
+            
         }
 }
 
@@ -97,7 +108,7 @@ function checkPick()
     var theDiv = document.getElementById("thePlayers");
     
     $.ajax({
-        url: 'index.php?checkdraftpcik=true&squadid='+GETARRAY['squadid'] ,
+        url: 'index.php?checkdraftpick=true&squadid='+GETARRAY['squadid'] ,
         cache: false,
         success: function(data)
         {
