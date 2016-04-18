@@ -289,7 +289,14 @@ function addPlayerToSquad(playerId)
     }
     else
     {
-        alert("No Cheating!");  
+        alert("No Cheating!"); 
+        var theDiv = document.getElementById('selectionAlertBox');
+    
+        theDiv.innerHTML = "";
+
+        document.getElementById('wrapper').style.opacity = '1';
+
+        theDiv.style.display = "none"; 
     }
 }
 
