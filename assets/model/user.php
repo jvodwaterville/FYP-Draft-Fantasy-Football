@@ -61,7 +61,7 @@ class user
                     }
                     else
                     {
-                        echo 'Wrong Password';
+                        header("location: " . "http://" . $_SERVER['SERVER_NAME'] ."/" . "draftFantasyFootball/index.php?wrongpassword");
                     }
                     
                 }
@@ -69,8 +69,7 @@ class user
             } 
             else 
             {
-                
-                echo "Username doesn't exist";
+                header("location: " . "http://" . $_SERVER['SERVER_NAME'] ."/" . "draftFantasyFootball/index.php?wrongpassword");
             }
 
         }

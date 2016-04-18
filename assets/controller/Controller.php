@@ -169,7 +169,14 @@ class Controller {
 		}
 		else 
 		{
-			 include('assets/view/home.php');
+            if (isset($_GET['wrongpassword']))
+            {
+				include('assets/view/homewp.php');
+            } 
+            else
+            {
+                include('assets/view/home.php');  
+            }
 		}
 			
     }

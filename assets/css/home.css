@@ -93,6 +93,11 @@
 		cursor: pointer;
 	}
 
+    #red
+    {
+        color: red;
+    }
+
     .clear
     {
         clear:both;
