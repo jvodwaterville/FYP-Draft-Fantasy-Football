@@ -70,7 +70,6 @@ function countDownTimer()
     countDownTime++;
     var timeLeft = selectionTime - countDownTime;
     
-    
     var minutes = Math.floor(timeLeft / 60);
     
     var seconds = timeLeft - minutes * 60;
@@ -81,6 +80,10 @@ function countDownTimer()
     
     if(timeLeft == 0)
         {
+            var theDiv = document.getElementById('selectionAlertBox');
+            theDiv.innerHTML = "";
+            theDiv.style.display = "none";
+            document.getElementById('wrapper').style.opacity = '1';
             clearInterval(countDown);
             $.ajax({
             url: 'index.php?selectrandomplayer=true&squadid='+teamCurrentlyPicking+'&picknumber='+draftPickNumber ,
