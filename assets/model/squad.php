@@ -421,6 +421,14 @@ class squad
             }
         }
         
+        //query database for details
+        $result = $this->database-> _getGameweekSquad($id, $gameweek);
+        
+         $count=mysqli_num_rows($result);
+        
+        if($count!=0)
+        {
+        
         //var to hold points totals
         $totalPoints = 0; $benchPoints = 0;
         
@@ -516,15 +524,8 @@ class squad
                 $totalPoints = $totalPoints + $starterPoints;
             }
         }
-        
-        //query database for details
-        $result = $this->database-> _getGameweekSquad($id, $gameweek);
-        
-         $count=mysqli_num_rows($result);
-        
-        if($count!=0)
-        {
-        
+            
+            
         $row = $result->fetch_assoc();
             //print out squad page details
             echo'
