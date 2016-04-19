@@ -72,8 +72,10 @@ class draft
         $draft = $this->database->getDraftDetails($squadId);
         $draftRow = $draft->fetch_assoc();
         $draftId = $draftRow['id'];
+        $leagueId = $draftRow['leagueId'];
         
-        $this->database->_startDraft($draftId);   
+        $this->database->_startDraft($draftId);
+        $this->database->_startLeague($leagueId);   
     }
     
     //gets the order of teams selecting during the draft

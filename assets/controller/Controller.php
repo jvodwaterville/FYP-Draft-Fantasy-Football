@@ -118,6 +118,10 @@ class Controller {
             {
                 $this->league->joinLeague();
             }
+            else if (isset($_GET['generatefixtures']))        
+            {
+                $this->league->generateFixtures();
+            }
             else if (isset($_GET['loadDash']))        
             {
                 $this->user->loadUsersLeagues();

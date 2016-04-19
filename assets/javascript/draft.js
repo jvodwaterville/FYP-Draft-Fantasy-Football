@@ -392,8 +392,19 @@ function cancelSelection()
 
 function startDraft()
 {
+    //starts the draft and league
     $.ajax({
             url: 'index.php?startdraft=true&squadid='+GETARRAY['squadid'] ,
+            cache: false,
+            success: function(data)
+            {
+               loadThisPage(); 
+               changePage(1);
+            },
+        });
+    //generates the fixtures for the league
+    $.ajax({
+            url: 'index.php?generatefixtures=true&squadid='+GETARRAY['squadid'] ,
             cache: false,
             success: function(data)
             {

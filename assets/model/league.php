@@ -935,9 +935,15 @@ class league
     }
     
     //generates the fixture list for fantasy league
-    function generateFixtures($leagueId)
+    function generateFixtures()
     {
         $gameWeeks = 38;
+        
+        //get league id
+        $teamsLeagueResult = $this->database->_getTeamsLeague($_GET['squadid']);
+        $teamsLeagueRow = $teamsLeagueResult->fetch_assoc();
+        //set the League id to the league id of the managers team
+        $leagueId = $teamsLeagueRow['leagueid'];
         
         //get gameweek based on date
         $date = date('y-m-d');

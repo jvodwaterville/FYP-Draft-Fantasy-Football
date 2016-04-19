@@ -284,10 +284,16 @@ STATUS , fantasyleague.id AS leagueId, COUNT( fantasymatch.status ) AS gamesPlay
         return $id;
     }
     
-    //adds a blank squad to database
+    //starts draft
      public function _startDraft($draftId)
     {
         mysqli_query ( $this->con, "UPDATE draft SET status = 1 WHERE id = $draftId" );
+    }
+    
+    //starts league
+     public function _startLeague($leagueId)
+    {
+        mysqli_query ( $this->con, "UPDATE fantasyleague SET status = 1 WHERE id = $leagueId" );
     }
     
     //adds team to draft order
