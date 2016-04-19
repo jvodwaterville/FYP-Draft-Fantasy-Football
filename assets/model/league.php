@@ -29,8 +29,14 @@ class league
         //get team name from form
         $teamname = $_GET['teamname'];
         
-        //add team to database and league
-        $this->database->_addNewTeam($result, $teamname, $admin);
+        //add team to database and league and get squad id
+        $theSquadId = $this->database->_addNewTeam($result, $teamname, $admin);
+        //add blank squad to database
+        $this->database->_addBlankSquad($theSquadId);
+        //add draft details and get draft id
+        $draftId = $this->database->_addDraft($result, $theSquadId);
+        //add to team to draft order
+        $this->database->_addDraftOrder($draftId, $theSquadId);
     }
     
     //adds a new team to an existing league
@@ -72,8 +78,18 @@ class league
                     //otherwise add team to database
                     else
                     {
-                        //add team to database
-                        $this->database->_addNewTeam($leagueid, $teamname, $manager);
+                        //add team to database and get squad id
+                        $theSquadId = $this->database->_addNewTeam($leagueid, $teamname, $manager);
+                        //add blank squad to database
+                        $this->database->_addBlankSquad($theSquadId);
+                        
+                        //get draftId
+                        $draft = $this->database->getDraftDetails($theSquadId);
+                        $draftRow = $draft->fetch_assoc();
+                        $draftId = $draftRow['id'];
+                        
+                        //add to team to draft order
+                        $this->database->_addDraftOrder($draftId, $theSquadId);
                     }
                 }
                 //otherwise the league has already started and they can't join
