@@ -42,7 +42,7 @@
         
         <div id="mid">
             <div id="whatYouNeed" class="topContent">
-                <div class="draftHeader">What You Need</div>
+                <div class="draftHeader"><p id="wynText">What You Need</p></div>
                 <div id="WYNbody">
                     <div class="WYNpos">GK</div>
                     <div class="WYNpos">DF</div>

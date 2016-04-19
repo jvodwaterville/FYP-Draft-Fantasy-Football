@@ -168,7 +168,7 @@ function checkPick()
                 if(leagueAdmin == 'Yes')
                 {
                     var theDiv = document.getElementById("theTimer");
-                    theDiv.innerHTML = "<button class='tradeButton' onclick='startDraft()'>Start Draft</button>";
+                    theDiv.innerHTML = "<button class='draftButton' onclick='startDraft()'>Start Draft</button>";
                 }
                 else
                 {
@@ -183,7 +183,7 @@ function checkPick()
                 clearInterval(countDown);
                 
                 var theDiv = document.getElementById("theTimer");
-                theDiv.innerHTML = "Draft has finished";
+                theDiv.innerHTML = "<div class='draftButton'><a href='index.php?squad=true&squadid="+GETARRAY['squadid']+"'>Draft Finished - View Squad</a></div>";
             }
         },
     });
@@ -210,7 +210,8 @@ function getDraftDetails()
             //set selection time
             selectionTime = parsedData['selectionTime'];
             //output team and league name
-            document.getElementById('teamNameLeagueName').innerHTML = parsedData['teamName'] +', '+parsedData['leagueName'];
+            document.getElementById("wynText").innerHTML = parsedData['teamName'] +' - What you need';
+            document.getElementById('teamNameLeagueName').innerHTML = "<div class='draftButton'><a href='index.php?dash=true'>Exit</a></div>";
         },
     });
     
