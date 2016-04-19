@@ -61,10 +61,12 @@ class database
     {
         $results = mysqli_query ( $this->con, "SELECT managersteam.manager as managerId, managersteam.id as teamId, managersteam.name as teamName, managersteam.colour1 as col1, managersteam.colour2 as col2, managersteam.jersey as jersey,
                                                 user.id as managerId, user.firstName as firstName, user.lastName as lastName,
-                                                fantasyleague.name as leagueName, fantasyleague.draftSelectionTime as selectionTime
+                                                fantasyleague.name as leagueName, fantasyleague.draftSelectionTime as selectionTime, fantasyleague.admin AS leagueadmin,
+                                                draft.status as draftStatus
                                                 FROM managersteam
                                                 INNER JOIN user ON user.id = managersteam.manager
                                                 INNER JOIN fantasyleague ON managersteam.league = fantasyleague.id
+                                                INNER JOIN draft on fantasyleague.id = draft.leagueId
                                                 WHERE managersteam.id ='$teamId';" );
         return $results;
     }
@@ -280,6 +282,12 @@ STATUS , fantasyleague.id AS leagueId, COUNT( fantasymatch.status ) AS gamesPlay
         $id = mysqli_insert_id($this->con);
         
         return $id;
+    }
+    
+    //adds a blank squad to database
+     public function _startDraft($draftId)
+    {
+        mysqli_query ( $this->con, "UPDATE draft SET status = 1 WHERE id = $draftId" );
     }
     
     //adds team to draft order
@@ -589,7 +597,7 @@ STATUS , fantasyleague.id AS leagueId
     //gets the league id and managers id of a managers team
     public function _getTeamsLeague($teamId)
     {
-        $results = mysqli_query ($this->con, "SELECT user.id AS managerid, managersteam.league AS teamleague, managersteam.manager AS teamsmanager, fantasyleague.id AS leagueid
+        $results = mysqli_query ($this->con, "SELECT user.id AS managerid, managersteam.league AS teamleague, managersteam.manager AS teamsmanager, fantasyleague.id AS leagueid, fantasyleague.admin AS leagueadmin
                                                 FROM user
                                                 INNER JOIN managersteam ON user.id = managersteam.manager
                                                 INNER JOIN fantasyleague ON fantasyleague.id = managersteam.league

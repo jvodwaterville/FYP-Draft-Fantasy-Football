@@ -162,6 +162,10 @@ class Controller {
             {
                 $this->draft->selectRandomPlayer();
             }
+            else if (isset($_GET['startdraft']))        
+            {
+                $this->draft->startDraft();
+            }
             else if (isset($_GET['test']))        
             {
                 include('assets/view/test.php');

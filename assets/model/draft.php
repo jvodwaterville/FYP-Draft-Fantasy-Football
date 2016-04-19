@@ -18,8 +18,17 @@ class draft
         $teamResult = $this->database->_getTeamLeagueDetails($_GET['squadid']);
         $teamRow = $teamResult->fetch_assoc();
         
+        if($_SESSION['id'] == $teamRow['leagueadmin'])
+        {
+            $isAdmin = 'Yes';
+        }
+        else
+        {
+            $isAdmin = 'No';
+        }
+        
         //put details into array
-        $array=array("teamName"=>$teamRow['teamName'],"leagueName"=>$teamRow['leagueName'],"selectionTime"=>$teamRow['selectionTime']);
+ $array=array("teamName"=>$teamRow['teamName'],"leagueName"=>$teamRow['leagueName'],"selectionTime"=>$teamRow['selectionTime'],"draftStatus"=>$teamRow['draftStatus'],"leagueAdmin"=>$isAdmin);
         
         echo json_encode($array);
     }
@@ -54,6 +63,18 @@ class draft
         echo json_encode($draftOrderArray);
     }
     
+    //starts draft
+    public function startDraft()
+    {
+        $squadId = $_GET['squadid'];
+
+        //set draft id
+        $draft = $this->database->getDraftDetails($squadId);
+        $draftRow = $draft->fetch_assoc();
+        $draftId = $draftRow['id'];
+        
+        $this->database->_startDraft($draftId);   
+    }
     
     //gets the order of teams selecting during the draft
     public function getDrafthistory()
@@ -475,9 +496,10 @@ class draft
         $draftRow = $draft->fetch_assoc();
         $draftId = $draftRow['id'];     
         $pickTeam = $draftRow['teamsPick'];     
-        $pickNo = $draftRow['pickNumber'];     
+        $pickNo = $draftRow['pickNumber'];      
+        $status = $draftRow['status'];     
 
-        $draftPickArray=array("pickNo"=>$pickNo,"pickTeam"=>$pickTeam);
+        $draftPickArray=array("pickNo"=>$pickNo,"pickTeam"=>$pickTeam,"status"=>$status);
         
         echo json_encode($draftPickArray);
     }

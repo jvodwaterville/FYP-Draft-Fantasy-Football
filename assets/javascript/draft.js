@@ -20,8 +20,17 @@ if(document.location.toString().indexOf('?') !== -1)
 //On page load run load page function to set objects functions
 window.onload = loadThisPage;
 
+//set countdown timer interval
+var myVar = setInterval(checkPick ,2000);
+
+//variable to hold weather or not user isleague admin
+var leagueAdmin = 'No';
+
 //holds page of free agent lists player is looking at
 var currentFreeAgentPage = 1;
+
+//placeHolder for draft status
+var draftStatus = 0;
 
 //place holders for countdown timer
 var selectionTime = 0;
@@ -103,9 +112,6 @@ function str_pad_left(string,pad,length) {
     return (new Array(length+1).join(pad)+string).slice(-length);
 }
 
-var myVar = setInterval(checkPick ,2000);
-
-
 function checkPick()
 {
     var theDiv = document.getElementById("thePlayers");
@@ -120,32 +126,65 @@ function checkPick()
             //set details of team currently picking
             var pickNumber = parsedData['pickNo'];
             var teamPicking = parsedData['pickTeam'];
+            var theDraftStatus = parsedData['status'];
             
-            //check if the team picking has changed since last check
-                //if it has then reload draft page with new details
-            if(teamPicking != teamCurrentlyPicking  || draftPickNumber != pickNumber)
+            //if draft is on going
+            if(theDraftStatus == 1)
+            {
+                //check if the team picking has changed since last check
+                    //if it has then reload draft page with new details
+                if(teamPicking != teamCurrentlyPicking  || draftPickNumber != pickNumber)
+                    {
+                        //reset timer
+                        clearInterval(countDown);
+                        countDownTime = 0;
+                        countDown = setInterval(countDownTimer,1000);
+
+                        teamCurrentlyPicking = teamPicking;
+                        draftPickNumber = pickNumber;
+
+                        changePage(currentFreeAgentPage);
+                        loadThisPage(); 
+
+                        document.getElementById('pickText').innerHTML = "Pick Order - Pick #" + pickNumber +" in progress";
+
+                        //check if its the users turn to pick
+                        if (teamPicking == GETARRAY['squadid'])
+                        {
+                            $('.tradeButton').show();
+                        }
+                        else
+                        {
+                            $('.tradeButton').hide();
+                        }
+                    }
+            }
+            //if draft hasnt started
+            else if (theDraftStatus == 0)
+            {
+                teamCurrentlyPicking = 0;
+                clearInterval(countDown);
+                
+                if(leagueAdmin == 'Yes')
                 {
-                    //reset timer
-                    countDownTime = 0;
-                    
-                    teamCurrentlyPicking = teamPicking;
-                    draftPickNumber = pickNumber;
-                    
-                    changePage(currentFreeAgentPage);
-                    loadThisPage(); 
-                    
-                    document.getElementById('pickText').innerHTML = "Pick Order - Pick #" + pickNumber +" in progress";
-                    
-                    //check if its the users turn to pick
-                    if (teamPicking == GETARRAY['squadid'])
-                    {
-                        $('.tradeButton').show();
-                    }
-                    else
-                    {
-                        $('.tradeButton').hide();
-                    }
+                    var theDiv = document.getElementById("theTimer");
+                    theDiv.innerHTML = "<button class='tradeButton' onclick='startDraft()'>Start Draft</button>";
                 }
+                else
+                {
+                    var theDiv = document.getElementById("theTimer");
+                    theDiv.innerHTML = "Draft hasn't started yet";
+                }
+            }
+            //if draft is finished
+            else
+            {
+                teamCurrentlyPicking = 0;
+                clearInterval(countDown);
+                
+                var theDiv = document.getElementById("theTimer");
+                theDiv.innerHTML = "Draft has finished";
+            }
         },
     });
 }
@@ -163,6 +202,11 @@ function getDraftDetails()
             //get json obect of details and parse it
             var parsedData = JSON.parse(data);
             
+            //get league admin
+            leagueAdmin = parsedData['leagueAdmin'];
+            console.log(leagueAdmin);
+            //set draft status time
+            draftStatus = parsedData['draftStatus'];
             //set selection time
             selectionTime = parsedData['selectionTime'];
             //output team and league name
@@ -344,6 +388,19 @@ function cancelSelection()
     document.getElementById('wrapper').style.opacity = '1';
     
     theDiv.style.display = "none";
+}
+
+function startDraft()
+{
+    $.ajax({
+            url: 'index.php?startdraft=true&squadid='+GETARRAY['squadid'] ,
+            cache: false,
+            success: function(data)
+            {
+               loadThisPage(); 
+               changePage(1);
+            },
+        });
 }
 
 //changes page on free agents result list, (pagification)
