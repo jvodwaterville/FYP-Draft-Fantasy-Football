@@ -133,6 +133,9 @@ class draft
             $pickNumber++;
         }
         
+        //get total number of picks in draft
+        $finalPick = $totalPicks * 18;
+        
         //place holder for number of pick
         $pickNumber = 1;
         
@@ -144,10 +147,19 @@ class draft
                 {
                     for($pick=1; $pick<=$totalPicks; $pick++)
                     {
-                        //if pick number is the next number up from last pick then update database
-                        if($pickNumber == $lastPickNo+1)
+                        //if last pick was final pick then end draft
+                        if($lastPickNo == $finalPick)
                         {
-                            $this->database->updateDraftPick($draftId, $draftOrderArray[$pick], $pickNumber);
+                            //end draft
+                            $this->database->_endDraft($draftId);
+                        }
+                        else
+                        {
+                            //if pick number is the next number up from last pick then update database
+                            if($pickNumber == $lastPickNo+1)
+                            {
+                                $this->database->updateDraftPick($draftId, $draftOrderArray[$pick], $pickNumber);
+                            }
                         }
                         $pickNumber++;
                     }
@@ -157,10 +169,19 @@ class draft
                 {
                     for($pick=$totalPicks; $pick>=1; $pick--)
                     {
-                        //if pick number is the next number up from last pick then update database
-                        if($pickNumber == $lastPickNo+1)
+                        //if last pick was final pick then end draft
+                        if($lastPickNo == $finalPick)
                         {
-                            $this->database->updateDraftPick($draftId, $draftOrderArray[$pick], $pickNumber);
+                            //end draft
+                            $this->database->_endDraft($draftId);
+                        }
+                        else
+                        {
+                            //if pick number is the next number up from last pick then update database
+                            if($pickNumber == $lastPickNo+1)
+                            {
+                                $this->database->updateDraftPick($draftId, $draftOrderArray[$pick], $pickNumber);
+                            }
                         }
                         $pickNumber++;
                     }

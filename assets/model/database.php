@@ -290,6 +290,12 @@ STATUS , fantasyleague.id AS leagueId, COUNT( fantasymatch.status ) AS gamesPlay
         mysqli_query ( $this->con, "UPDATE draft SET status = 1 WHERE id = $draftId" );
     }
     
+    //ends draft
+     public function _endDraft($draftId)
+    {
+        mysqli_query ( $this->con, "UPDATE draft SET status = 2 WHERE id = $draftId" );
+    }
+    
     //starts league
      public function _startLeague($leagueId)
     {
