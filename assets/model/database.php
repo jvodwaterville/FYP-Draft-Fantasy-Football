@@ -42,7 +42,7 @@ class database
     
     // -- Function Name : login
     // -- Params : $email, $password
-    // -- Purpose : Logins int he user to check if there in the database.
+    // -- Purpose : Checks if username exists in the database.
     public function _login($username) 
     {
         $results = mysqli_query ( $this->con, "SELECT * FROM user WHERE username='$username';" );
