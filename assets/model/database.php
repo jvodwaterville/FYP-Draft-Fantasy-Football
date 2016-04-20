@@ -6,12 +6,6 @@ class database
     var $host = "127.0.0.1";
     var $database = "draftfantasyfootball";
     var $con;
-    
-    /*var $user = "j565246_draftFF";
-    var $password = "g@CcZ,QgVGKH";
-    var $host = "127.0.0.1";
-    var $database = "j565246_draftfantasyfootball";
-    var $con;*/
 
     // -- Function Name : __construct
     // -- Params :
