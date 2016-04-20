@@ -306,7 +306,7 @@ select:focus option
 
 .pickTable .headingColumn
 {
-    background: #007373;
+    background: #007373 !important;
     opacity: 0.75;
     color: #FFFFFF;
 }
