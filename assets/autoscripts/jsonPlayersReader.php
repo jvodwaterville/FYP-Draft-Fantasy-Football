@@ -1,12 +1,13 @@
 <html>
 
 <head>
-	<title>DFF</title>
-	
+    <title>DFF</title>
+
 </head>
+
 <body>
-    
-	<?php 
+
+    <?php
         
         /*$user = "root";
         $password = "";
@@ -90,4 +91,5 @@
 		?>
 
 </body>
+
 </html>

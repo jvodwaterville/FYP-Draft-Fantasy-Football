@@ -1,21 +1,17 @@
-@media screen and (min-width: 900px) 
-{
-    #tpSelectorsHolder
-    {
+@media screen and (min-width: 900px) {
+    #tpSelectorsHolder {
         margin-top: -5px;
         margin-bottom: 5px;
         height: 60px;
         width: 100%;
         background-color: #007373;
         color: #D8D8D8;
-        -webkit-box-shadow:0px 1px 17px 0px rgba(0,0,0,0.75);
-        -moz-box-shadow: 0px 1px 17px 0px rgba(0,0,0,0.75);
-        box-shadow: 0px 1px 17px 0px rgba(0,0,0,0.75);
+        -webkit-box-shadow: 0px 1px 17px 0px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 0px 1px 17px 0px rgba(0, 0, 0, 0.75);
+        box-shadow: 0px 1px 17px 0px rgba(0, 0, 0, 0.75);
     }
-
-    .tpSelect
-    {
-        width:25%;
+    .tpSelect {
+        width: 25%;
         height: 40px;
         margin-top: 10px;
         line-height: 40px;
@@ -25,15 +21,11 @@
         border-top: 1px solid white;
         border-bottom: 1px solid white;
     }
-
-    .tpSelect:hover
-    {
+    .tpSelect:hover {
         color: #FFFFFF;
     }
-
-    .tpSelected
-    {
-        width:25%;
+    .tpSelected {
+        width: 25%;
         height: 40px;
         margin-top: 10px;
         line-height: 40px;
@@ -46,24 +38,21 @@
         color: #FFFFFF;
     }
 }
-@media screen and (max-width: 899px) 
-{
-    #tpSelectorsHolder
-    {
+
+@media screen and (max-width: 899px) {
+    #tpSelectorsHolder {
         margin-top: -5px;
         margin-bottom: 5px;
         height: 70px;
         width: 100%;
         background-color: #007373;
         color: #D8D8D8;
-        -webkit-box-shadow:0px 1px 17px 0px rgba(0,0,0,0.75);
-        -moz-box-shadow: 0px 1px 17px 0px rgba(0,0,0,0.75);
-        box-shadow: 0px 1px 17px 0px rgba(0,0,0,0.75);
+        -webkit-box-shadow: 0px 1px 17px 0px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 0px 1px 17px 0px rgba(0, 0, 0, 0.75);
+        box-shadow: 0px 1px 17px 0px rgba(0, 0, 0, 0.75);
     }
-
-    .tpSelect
-    {
-        width:50%;
+    .tpSelect {
+        width: 50%;
         height: 25px;
         margin-top: 5px;
         line-height: 20px;
@@ -73,15 +62,11 @@
         border-top: 1px solid white;
         border-bottom: 1px solid white;
     }
-
-    .tpSelect:hover
-    {
+    .tpSelect:hover {
         color: #FFFFFF;
     }
-
-    .tpSelected
-    {
-        width:50%;
+    .tpSelected {
+        width: 50%;
         height: 25px;
         margin-top: 5px;
         line-height: 20px;
@@ -95,8 +80,6 @@
     }
 }
 
-
-#openOffer
-{
-    background-color: #BF0000;    
+#openOffer {
+    background-color: #BF0000;
 }

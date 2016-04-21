@@ -1,11 +1,12 @@
 <html>
 
 <head>
-	<title>DFF</title>
+    <title>DFF</title>
 </head>
+
 <body>
-    
-	<?php 
+
+    <?php
         
         $user = "j565246_draftFF";
         $password = "g@CcZ,QgVGKH";
@@ -327,4 +328,5 @@
 		?>
 
 </body>
+
 </html>

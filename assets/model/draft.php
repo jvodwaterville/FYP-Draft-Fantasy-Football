@@ -531,7 +531,7 @@ class draft
     public function selectRandomPlayer()
     {
         //set number of players to pick from
-        $num_rec_per_page=25;
+        $num_rec_per_page=15;
         $start_from = 0;
         
         $passedInPickNumber = $_GET['picknumber'];
@@ -707,7 +707,7 @@ class draft
             $positionString = "and position = '". $positionsAvailable[$pickThisPosition] ."'"; 
 
             //generate random number to select random player from returned results
-            $pickThisPlayer = rand(0,24);
+            $pickThisPlayer = rand(0,14);
             //placeholder for what number player the loop is on
             $loopNumber = 0;
 

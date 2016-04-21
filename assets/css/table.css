@@ -1,69 +1,68 @@
-#noFixturesText
-{
+#noFixturesText {
     text-align: center;
     margin-top: 30px;
     padding-bottom: 30px;
 }
 
-table
-{
+table {
     margin-top: 10px;
-    width:100%;
-    color:#BF0000;
+    width: 100%;
+    color: #BF0000;
     text-align: center;
     cursor: pointer;
-     -webkit-box-shadow:0px 1px 17px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 1px 17px 0px rgba(0,0,0,0.75);
-    box-shadow: 0px 1px 17px 0px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 0px 1px 17px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 1px 17px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 1px 17px 0px rgba(0, 0, 0, 0.75);
 }
-table th
-{
+
+table th {
     height: 31px;
     line-height: 31px;
     background-color: #BF0000;
-    color:#FFFFFF;
-    border:1px solid #FFFFFF;
+    color: #FFFFFF;
+    border: 1px solid #FFFFFF;
 }
-table td
-{
+
+table td {
     height: 23px;
     line-height: 23px;
-    border:1px solid #FFE5E5;
-}
-table tr:nth-child(odd) {background: #FFE5E5;}
-table tr:nth-child(odd) td {border:1px solid #FFFFFF;}
-
-table .teamName
-{
-    width:50%;
+    border: 1px solid #FFE5E5;
 }
 
-table .usersTeam
-{
+table tr:nth-child(odd) {
+    background: #FFE5E5;
+}
+
+table tr:nth-child(odd) td {
+    border: 1px solid #FFFFFF;
+}
+
+table .teamName {
+    width: 50%;
+}
+
+table .usersTeam {
     color: #990000;
-    font-weight:bolder;
+    font-weight: bolder;
 }
 
-#fixturesHolder
-{
+#fixturesHolder {
     margin: auto;
     margin-top: 20px;
-    color:#BF0000;
+    color: #BF0000;
     margin-bottom: 20px;
     overflow: hidden;
 }
 
-#fixturesWrapper
-{
+#fixturesWrapper {
     margin-top: 10px;
-    width:100%;
-    -webkit-box-shadow:0px 1px 17px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 1px 17px 0px rgba(0,0,0,0.75);
-    box-shadow: 0px 1px 17px 0px rgba(0,0,0,0.75);
+    width: 100%;
+    -webkit-box-shadow: 0px 1px 17px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 1px 17px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 1px 17px 0px rgba(0, 0, 0, 0.75);
 }
 
-.fixture
-{
+.fixture {
     width: 100%;
     height: 40px;
     line-height: 40px;
@@ -71,80 +70,69 @@ table .usersTeam
     overflow: hidden;
 }
 
-.fixture:nth-child(even) {background: #FFE5E5;}
+.fixture:nth-child(even) {
+    background: #FFE5E5;
+}
 
-.fixture a
-{
+.fixture a {
     color: inherit;
 }
 
-.fixtureText
-{
+.fixtureText {
     padding-left: 1.5em;
     padding-right: 1.5em;
 }
 
-#gwSelector
-{
+#gwSelector {
     height: 40px;
     line-height: 40px;
     text-align: center;
     width: 100%;
 }
-#gwSelector *
-{
+
+#gwSelector * {
     display: inline-block;
 }
 
-.gwButtonL
-{
+.gwButtonL {
     float: left;
     margin-left: 10px;
     text-decoration: underline;
     cursor: pointer;
 }
-.gwButtonR
-{
+
+.gwButtonR {
     float: right;
     margin-right: 10px;
     text-decoration: underline;
     cursor: pointer;
 }
 
-#tableHolder a
-{
+#tableHolder a {
     color: inherit;
-} 
+}
 
-@media screen and (min-width: 900px) 
-{
-    #tableHolder
-    {
+@media screen and (min-width: 900px) {
+    #tableHolder {
         padding-top: 10px;
-        width:75%;
-        color:#BF0000;
-        margin:auto;
-    }   
-    
-    #fixturesHolder
-    {
-        width:75%;
+        width: 75%;
+        color: #BF0000;
+        margin: auto;
+    }
+    #fixturesHolder {
+        width: 75%;
     }
 }
 
-@media screen and (max-width: 899px) 
-{
-    #tableHolder
-    {
+@media screen and (max-width: 899px) {
+    #tableHolder {
         padding-top: 10px;
-        width:100%;
-        color:#BF0000;
-        margin:auto;
+        width: 100%;
+        color: #BF0000;
+        margin: auto;
         text-align: center;
-    }   
-    
-    #fixturesHolder
-    {
+    }
+    #fixturesHolder {
         width: 100%;
         margin: auto;
         margin-top: 10px;
