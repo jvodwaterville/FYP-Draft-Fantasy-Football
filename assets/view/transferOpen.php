@@ -4,16 +4,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="assets/images/layOutPics/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="assets/css/reset.css" />
-    <link rel="stylesheet" type="text/css" href="assets/css/menu.css" />
-    <link rel="stylesheet" type="text/css" href="assets/css/transferMenu.css" />
-    <link rel="stylesheet" type="text/css" href="assets/css/transferOpen.css" />
-    <link rel="stylesheet" type="text/css" href="assets/css/playerInfoPopUp.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/menu.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/transferMenu.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/transferOpen.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/playerInfoPopUp.min.css" />
 	<script src="assets/javascript/jqueryui/jquery-ui.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="assets/javascript/menu.js"></script>
-    <script src="assets/javascript/transferOpen.js"></script>
-    <script src="assets/javascript/playerInfoPopUp.js"></script>
+    <script src="assets/javascript/menu.min.js"></script>
+    <script src="assets/javascript/transferOpen.min.js"></script>
+    <script src="assets/javascript/playerInfoPopUp.min.js"></script>
     
     <title>DFF | Transfer Market |</title>
 

@@ -3,11 +3,11 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="assets/images/layOutPics/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="assets/css/reset.css" />
-    <link rel="stylesheet" type="text/css" href="assets/css/home.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/home.min.css" />
 	<script src="assets/javascript/jqueryui/jquery-ui.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="assets/javascript/homepage.js"></script>
+    <script src="assets/javascript/homepage.min.js"></script>
     
     <title>Draft Fantasy Football | Log In |</title>
 

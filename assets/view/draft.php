@@ -4,13 +4,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="assets/images/layOutPics/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="assets/css/reset.css" />
-    <link rel="stylesheet" type="text/css" href="assets/css/draft.css" />
-    <link rel="stylesheet" type="text/css" href="assets/css/playerInfoPopUp.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/draft.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/playerInfoPopUp.min.css" />
 	<script src="assets/javascript/jqueryui/jquery-ui.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="assets/javascript/draft.js"></script>
-	<script src="assets/javascript/playerInfoPopUp.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+    <script src="assets/javascript/draft.min.js"></script>
+	<script src="assets/javascript/playerInfoPopUp.min.js"></script>
     
     <title>DFF | The Draft |</title>
 
