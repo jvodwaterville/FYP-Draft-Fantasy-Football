@@ -44,7 +44,7 @@
             $gk1 = $allSquadsRow['g1'];
             
             //get starting goalkeepers details 
-            $goalie =mysqli_query ( $con, "SELECT player.*, clubteam.fullName AS teamName, points.* 
+            $goalie =mysqli_query ( $con, "SELECT player.*, clubteam.fullName AS teamName, SUM(points.total) AS total, SUM(points.mp) AS mins
                                                 FROM player
                                                 INNER JOIN points ON points.playerId = player.id
                                                 INNER JOIN clubteam ON player.teamId = clubteam.id
@@ -52,14 +52,14 @@
                                                 AND points.gameweek = $gameweek;" );
             $goalieRow = $goalie->fetch_assoc();
             //check if goallkeeper played
-            if($goalieRow['mp'] == 0)
+            if($goalieRow['mins'] == 0)
             {
                 //if they didn't
                 //set goalkeeper 2s id
                 $gk2 = $allSquadsRow['g2'];
                 
                 //get sub goalies details
-                $goalie2 =mysqli_query ( $con, "SELECT player.*, clubteam.fullName AS teamName, points.* 
+                $goalie2 =mysqli_query ( $con, "SELECT player.*, clubteam.fullName AS teamName, SUM(points.total) AS total, SUM(points.mp) AS mins
                                                 FROM player
                                                 INNER JOIN points ON points.playerId = player.id
                                                 INNER JOIN clubteam ON player.teamId = clubteam.id
@@ -67,7 +67,7 @@
                                                 AND points.gameweek = $gameweek;" );
                 $goalieRow2 = $goalie2->fetch_assoc();
                 //check if sub goalie played
-                if($goalieRow2['mp'] != 0)
+                if($goalieRow2['mins'] != 0)
                 {
                     //if they did update the gameweek squad to bring on sub
                     mysqli_query ( $con, "UPDATE gameweekteam SET g1=$gk2, g2=$gk1 WHERE teamId = $squadId and gameweek = $gameweek;" );
@@ -112,10 +112,10 @@
                 //set players id
                 $starterId = $thisSquadsRow[$stId];
                 //get starting players details 
-                $starter =mysqli_query ( $con, "SELECT player.*, clubteam.fullName AS teamName, points.* 
-                                                        FROM player
-                                                        INNER JOIN points ON points.playerId = player.id
-                                                        INNER JOIN clubteam ON player.teamId = clubteam.id
+                $starter =mysqli_query ( $con, "SELECT player.*, clubteam.fullName AS teamName, SUM(points.total) AS total, SUM(points.mp) AS mins
+                                                FROM player
+                                                INNER JOIN points ON points.playerId = player.id
+                                                INNER JOIN clubteam ON player.teamId = clubteam.id
                                                         WHERE player.id = $starterId
                                                         AND points.gameweek = $gameweek;" );
                 $starterRow = $starter->fetch_assoc();
@@ -123,7 +123,7 @@
                 if($starterRow['position'] == "Defender")
                 {
                     //check if player played
-                    if($starterRow['mp'] == 0)
+                    if($starterRow['mins'] == 0)
                     {
                         //if they didn't
                         //loop through subs and make sub if possible
@@ -134,10 +134,10 @@
                             $subId = $thisSquadsRow[$sId];
                             
                             //get sub players details 
-                            $sub =mysqli_query ( $con, "SELECT player.*, clubteam.fullName AS teamName, points.* 
-                                                            FROM player
-                                                            INNER JOIN points ON points.playerId = player.id
-                                                            INNER JOIN clubteam ON player.teamId = clubteam.id
+                            $sub =mysqli_query ( $con, "SELECT player.*, clubteam.fullName AS teamName, SUM(points.total) AS total, SUM(points.mp) AS mins
+                                                FROM player
+                                                INNER JOIN points ON points.playerId = player.id
+                                                INNER JOIN clubteam ON player.teamId = clubteam.id
                                                             WHERE player.id = $subId
                                                             AND points.gameweek = $gameweek;" );
                             $subRow = $sub->fetch_assoc();
@@ -145,7 +145,7 @@
                             if($dfs == 3)
                             {
                                 //if sub played and their position is defender sub player in
-                                if($subRow['mp'] != 0 && $subRow['position'] == "Defender")
+                                if($subRow['mins'] != 0 && $subRow['position'] == "Defender")
                                 {
                                     //if they did update the gameweek squad to bring on sub
                                     mysqli_query ( $con, "UPDATE gameweekteam SET $stId=$subId, $sId=$starterId WHERE teamId = $squadId and gameweek = $gameweek;" );
@@ -157,7 +157,7 @@
                             else
                             {
                                 //if sub played sub player in
-                                if($subRow['mp'] != 0)
+                                if($subRow['mins'] != 0)
                                 {
                                     //take one off starting defenders count for player subbed off
                                     $dfs--;
@@ -190,7 +190,7 @@
                 else if($starterRow['position'] == "Midfielder")
                 {
                     //check if player played
-                    if($starterRow['mp'] == 0)
+                    if($starterRow['mins'] == 0)
                     {
                         //if they didn't
                         //loop through subs and make sub if possible
@@ -201,10 +201,10 @@
                             $subId = $thisSquadsRow[$sId];
                             
                             //get sub players details 
-                            $sub =mysqli_query ( $con, "SELECT player.*, clubteam.fullName AS teamName, points.* 
-                                                            FROM player
-                                                            INNER JOIN points ON points.playerId = player.id
-                                                            INNER JOIN clubteam ON player.teamId = clubteam.id
+                            $sub =mysqli_query ( $con, "SELECT player.*, clubteam.fullName AS teamName, SUM(points.total) AS total, SUM(points.mp) AS mins
+                                                FROM player
+                                                INNER JOIN points ON points.playerId = player.id
+                                                INNER JOIN clubteam ON player.teamId = clubteam.id
                                                             WHERE player.id = $subId
                                                             AND points.gameweek = $gameweek;" );
                             $subRow = $sub->fetch_assoc();
@@ -212,7 +212,7 @@
                             if($mfs == 2)
                             {
                                 //if sub played and their position is midfielder sub player in
-                                if($subRow['mp'] != 0 && $subRow['position'] == "Midfielder")
+                                if($subRow['mins'] != 0 && $subRow['position'] == "Midfielder")
                                 {
                                     //if they did update the gameweek squad to bring on sub
                                     mysqli_query ( $con, "UPDATE gameweekteam SET $stId=$subId, $sId=$starterId WHERE teamId = $squadId and gameweek = $gameweek;" );
@@ -224,7 +224,7 @@
                             else
                             {
                                 //if sub played sub player in
-                                if($subRow['mp'] != 0)
+                                if($subRow['mins'] != 0)
                                 {
                                     //take one off starting midfielders count for player subbed off
                                     $mfs--;
@@ -257,7 +257,7 @@
                 else if($starterRow['position'] == "Forward")
                 {
                     //check if player played
-                    if($starterRow['mp'] == 0)
+                    if($starterRow['mins'] == 0)
                     {
                         //if they didn't
                         //loop through subs and make sub if possible
@@ -268,10 +268,10 @@
                             $subId = $thisSquadsRow[$sId];
                             
                             //get sub players details 
-                            $sub =mysqli_query ( $con, "SELECT player.*, clubteam.fullName AS teamName, points.* 
-                                                            FROM player
-                                                            INNER JOIN points ON points.playerId = player.id
-                                                            INNER JOIN clubteam ON player.teamId = clubteam.id
+                            $sub =mysqli_query ( $con, "SELECT player.*, clubteam.fullName AS teamName, SUM(points.total) AS total, SUM(points.mp) AS mins
+                                                FROM player
+                                                INNER JOIN points ON points.playerId = player.id
+                                                INNER JOIN clubteam ON player.teamId = clubteam.id
                                                             WHERE player.id = $subId
                                                             AND points.gameweek = $gameweek;" );
                             $subRow = $sub->fetch_assoc();
@@ -279,7 +279,7 @@
                             if($fws == 1)
                             {
                                 //if sub played and their position is Forward sub player in
-                                if($subRow['mp'] != 0 && $subRow['position'] == "Forward")
+                                if($subRow['mins'] != 0 && $subRow['position'] == "Forward")
                                 {
                                     //if they did update the gameweek squad to bring on sub
                                     mysqli_query ( $con, "UPDATE gameweekteam SET $stId=$subId, $sId=$starterId WHERE teamId = $squadId and gameweek = $gameweek;" );
@@ -291,7 +291,7 @@
                             else
                             {
                                 //if sub played sub player in
-                                if($subRow['mp'] != 0)
+                                if($subRow['mins'] != 0)
                                 {
                                     //take one off starting Forwards count for player subbed off
                                     $fws--;
