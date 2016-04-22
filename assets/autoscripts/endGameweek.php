@@ -50,7 +50,7 @@
                                                     ON fantasymatch.team1 = one.id
                                                 Inner JOIN managersteam AS two 
                                                     ON fantasymatch.team2 = two.id
-                                                where fantasymatch.league = '$leagueid' and fantasymatch.gameweek = '$gameweek';" );
+                                                where fantasymatch.league = '$leagueid' and fantasymatch.status = 1 and fantasymatch.gameweek = '$gameweek';" );
 
             $count=mysqli_num_rows($result);
             //if no fixtures are returned print message
@@ -270,7 +270,7 @@
                                                 INNER JOIN managersteam AS two 
                                                     ON fantasymatch.team2 = two.id
                                                 WHERE fantasymatch.league =  '$leagueid'
-                                                AND fantasymatch.gameweek =  '$gameweek'
+                                                AND fantasymatch.gameweek =  '$gameweek'  and fantasymatch.status = 1
                                                 AND fantasymatch.team1 =  '-1';" );
             //count to see if there are any fixtures vs League Average
             $countVsLa=mysqli_num_rows($resultVsLA);
