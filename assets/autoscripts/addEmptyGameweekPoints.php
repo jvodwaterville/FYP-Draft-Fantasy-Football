@@ -11,9 +11,9 @@
         $user = "j565246_draftFF";
         $password = "g@CcZ,QgVGKH";
         $host = "127.0.0.1";
-        /*$database = "j565246_draftfantasyfootball";
+        $database = "j565246_draftfantasyfootball";
         
-        $user = "root";
+        /*$user = "root";
         $password = "";
         $host = "127.0.0.1";
         $database = "draftfantasyfootball";*/

@@ -184,7 +184,6 @@ function getDraftDetails() {
 
             //get league admin
             leagueAdmin = parsedData['leagueAdmin'];
-            console.log(leagueAdmin);
             //set draft status time
             draftStatus = parsedData['draftStatus'];
             //set selection time
@@ -310,28 +309,22 @@ function selectPlayer(id) {
 
 //puts selection through
 function addPlayerToSquad(playerId) {
+
+    var theDiv = document.getElementById('selectionAlertBox');
+    theDiv.innerHTML = "";
+    document.getElementById('wrapper').style.opacity = '1';
+    theDiv.style.display = "none";
     if (teamCurrentlyPicking == GETARRAY['squadid']) {
         $.ajax({
-            url: 'index.php?addplayertosquad=true&squadid=' + GETARRAY['squadid'] + '&playerid=' + playerId,
+            url: 'index.php?addplayertosquad=true&squadid=' + GETARRAY['squadid'] + '&playerid=' + playerId + '&picknumber=' + draftPickNumber,
             cache: false,
             success: function (data) {
-                var theDiv = document.getElementById('selectionAlertBox');
-                theDiv.innerHTML = "";
-                theDiv.style.display = "none";
-                document.getElementById('wrapper').style.opacity = '1';
                 loadThisPage();
                 changePage(1);
             },
         });
     } else {
         alert("No Cheating!");
-        var theDiv = document.getElementById('selectionAlertBox');
-
-        theDiv.innerHTML = "";
-
-        document.getElementById('wrapper').style.opacity = '1';
-
-        theDiv.style.display = "none";
     }
 }
 
