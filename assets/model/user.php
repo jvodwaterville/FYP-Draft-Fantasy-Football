@@ -107,6 +107,7 @@ class user
             // username and password sent from form
             $username =$_POST['username'];
             
+            //check if username already exists
             $result =  $this->database->_login($username);
             $count=mysqli_num_rows($result);
 
@@ -131,6 +132,7 @@ class user
                 // Hash the password with the salt
                 $hash = crypt($password, $salt);
 
+                //get other user details
                 $fName = $_POST['fName'];
                 $lName= $_POST['lName'];
                 $username = $_POST['username'];

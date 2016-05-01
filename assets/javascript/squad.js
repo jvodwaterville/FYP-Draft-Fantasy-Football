@@ -206,6 +206,11 @@ function chooseSub(position) {
                     this.style.opacity = "0.7";
                     this.setAttribute("onClick", "makeSub(this.id, idHolder);");
                 }
+                else {
+                    this.style.backgroundColor = "none";
+                    this.style.opacity = "1";
+                    this.setAttribute("onClick", "none;");
+                }
                 //dont allow players on the field to be swapped or players in reserves
                 if (this.parentNode.parentNode.id == squadStatus || this.parentNode.parentNode.id == "reserves") {
                     this.style.backgroundColor = "none";
@@ -222,8 +227,13 @@ function chooseSub(position) {
                     this.style.opacity = "0.7";
                     this.setAttribute("onClick", "makeSub(this.id, idHolder);");
                 }
+                else {
+                    this.style.backgroundColor = "none";
+                    this.style.opacity = "1";
+                    this.setAttribute("onClick", "none;");
+                }
                 //dont allow players on the field to be swapped or players in reserves
-                else if (this.parentNode.parentNode.id == squadStatus || this.parentNode.parentNode.id == "reserves") {
+                if (this.parentNode.parentNode.id == squadStatus || this.parentNode.parentNode.id == "reserves") {
                     this.style.backgroundColor = "none";
                     this.style.opacity = "1";
                     this.setAttribute("onClick", "none;");
@@ -530,6 +540,11 @@ function chooseSub(position) {
                     this.style.opacity = "0.7";
                     this.setAttribute("onClick", "makeSub(this.id, idHolder);");
                 }
+                else {
+                    this.style.backgroundColor = "none";
+                    this.style.opacity = "1";
+                    this.setAttribute("onClick", "none;");
+                }
                 //dont allow players on the field to be swapped or players in reserves
                 if (this.parentNode.parentNode.id == squadStatus || this.parentNode.parentNode.id == "reserves") {
                     this.style.backgroundColor = "none";
@@ -546,8 +561,13 @@ function chooseSub(position) {
                     this.style.opacity = "0.7";
                     this.setAttribute("onClick", "makeSub(this.id, idHolder);");
                 }
+                else {
+                    this.style.backgroundColor = "none";
+                    this.style.opacity = "1";
+                    this.setAttribute("onClick", "none;");
+                }
                 //dont allow players on the field to be swapped or players in reserves
-                else if (this.parentNode.parentNode.id == squadStatus || this.parentNode.parentNode.id == "reserves") {
+                if (this.parentNode.parentNode.id == squadStatus || this.parentNode.parentNode.id == "reserves") {
                     this.style.backgroundColor = "none";
                     this.style.opacity = "1";
                     this.setAttribute("onClick", "none;");
