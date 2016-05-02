@@ -526,7 +526,7 @@ class draft
         }
     }
     
-    //
+    //getdraft pick details
     public function checkDraftPick()
     {
         $squadId = $_GET['squadid'];

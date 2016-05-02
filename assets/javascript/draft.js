@@ -18,7 +18,7 @@ if (document.location.toString().indexOf('?') !== -1) {
 //On page load run load page function to set objects functions
 window.onload = loadThisPage;
 
-//set countdown timer interval
+//set database check timer interval
 var myVar = setInterval(checkPick, 2000);
 
 //variable to hold weather or not user isleague admin
@@ -107,15 +107,13 @@ function str_pad_left(string, pad, length) {
 }
 
 function checkPick() {
-    var theDiv = document.getElementById("thePlayers");
-
     $.ajax({
         url: 'index.php?checkdraftpick=true&squadid=' + GETARRAY['squadid'],
         cache: false,
         success: function (data) {
             var parsedData = JSON.parse(data);
 
-            //set details of team currently picking
+            //get draft details
             var pickNumber = parsedData['pickNo'];
             var teamPicking = parsedData['pickTeam'];
             var theDraftStatus = parsedData['status'];
@@ -130,18 +128,23 @@ function checkPick() {
                     countDownTime = 0;
                     countDown = setInterval(countDownTimer, 1000);
 
+                    //update details of last pick
                     teamCurrentlyPicking = teamPicking;
                     draftPickNumber = pickNumber;
 
+                    //update draft details on the page
                     changePage(currentFreeAgentPage);
                     loadThisPage();
 
                     document.getElementById('pickText').innerHTML = "Pick Order - Pick #" + pickNumber + " in progress";
 
                     //check if its the users turn to pick
+                        //if it is allow them to select players
                     if (teamPicking == GETARRAY['squadid']) {
                         $('.tradeButton').show();
-                    } else {
+                    }
+                    //if not don't allow themto select player
+                    else {
                         $('.tradeButton').hide();
                     }
                 }
