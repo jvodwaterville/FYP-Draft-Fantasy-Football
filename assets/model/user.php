@@ -57,11 +57,11 @@ class user
                         $this->id     = $row['id'];
                         $this->name = $row['firstName']. " " .$row['lastName'];
                         $this->sessionCookies();
-                        header("location: " . "http://" . $_SERVER['SERVER_NAME'] ."/" . "draftFantasyFootball/index.php?dash=true");
+                        header("location: " . "http://" . $_SERVER['SERVER_NAME'] ."/index.php?dash=true");
                     }
                     else
                     {
-                        header("location: " . "http://" . $_SERVER['SERVER_NAME'] ."/" . "draftFantasyFootball/index.php?wrongpassword");
+                        header("location: " . "http://" . $_SERVER['SERVER_NAME'] ."/index.php?wrongpassword");
                     }
                     
                 }
@@ -69,7 +69,7 @@ class user
             } 
             else 
             {
-                header("location: " . "http://" . $_SERVER['SERVER_NAME'] ."/" . "draftFantasyFootball/index.php?wrongpassword");
+                header("location: " . "http://" . $_SERVER['SERVER_NAME'] ."/index.php?wrongpassword");
             }
 
         }
@@ -93,7 +93,7 @@ class user
 
         session_destroy();
         // Finally, destroy the session.
-        header("location: " . "http://" . $_SERVER['SERVER_NAME'] ."/" . "draftFantasyFootball/index.php");
+        header("location: " . "http://" . $_SERVER['SERVER_NAME'] ."/index.php");
     }
     
     // -- Function Name : registration
@@ -150,7 +150,7 @@ class user
                         $this->id     = $row['id'];
                         $this->name = $row['firstName']. " " .$row['lastName'];
                         $this->sessionCookies();
-                        header("location: " . "http://" . $_SERVER['SERVER_NAME'] ."/" . "draftFantasyFootball/index.php?dash=true");
+                        header("location: " . "http://" . $_SERVER['SERVER_NAME'] ."/index.php?dash=true");
                     }
                 }
             }
