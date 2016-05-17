@@ -228,22 +228,11 @@ class league
         //print out  fixtures details
         echo'
             <div id="fixturesWrapper">
-                <div id="gwSelector">';
-            //if $lastWeek is 0, dont show previous week button
-                if($lastWeek != 0)
-                {
-                    echo '<p class="gwButtonL" id="'. $lastWeek.'">Previous</p>';
-                }
-                    
-                 echo '<p id="gwNumber">Gameweek '. $gameweek .'</p>';
-        
-            //if $nextWeek is 39, dont show previous week button
-                if($nextWeek != 39)
-                {
-                    echo '<p class="gwButtonR" id="'. $nextWeek.'">Next</p>';
-                }
-        echo'
-                    </div>
+                <div id="gwSelector">
+                <p class="gwButtonL" id="'. $lastWeek.'">Previous</p>
+                <p id="gwNumber">Gameweek '. $gameweek .'</p>
+                <p class="gwButtonR" id="'. $nextWeek.'">Next</p>
+            </div>
             <div id="changeFixturesWrapper">
         ';
         
