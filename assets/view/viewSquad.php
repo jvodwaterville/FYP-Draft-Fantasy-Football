@@ -16,7 +16,7 @@
     <script src="assets/javascript/viewsquad.min.js"></script>
     <script src="assets/javascript/playerInfoPopUp.min.js"></script>
 
-    <title>DFF | Squad |</title>
+    <title>DFF | Points |</title>
 
 </head>
 
