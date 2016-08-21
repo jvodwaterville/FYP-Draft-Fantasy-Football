@@ -69,15 +69,32 @@ class database
     public function _loadSquad($teamId) 
     {
         $results = mysqli_query ( $this->con, "SELECT managersteam.manager as managerId, managersteam.id as teamId, managersteam.name as teamName, managersteam.colour1 as col1, managersteam.colour2 as col2, managersteam.jersey as jersey,
-                                                currentsquad.*, 
+                                                currentsquad.*, sum(player.value) as squadvalue,
                                                 user.id as managerId, user.firstName as firstName, user.lastName as lastName  
                                                 FROM managersteam
                                                 INNER JOIN currentsquad ON managersteam.id = currentsquad.teamId
                                                 INNER JOIN user ON user.id = managersteam.manager
+                                                INNER join player
+                                                    on player.id = currentsquad.st1 or player.id = currentsquad.st2 or player.id = currentsquad.st3 or player.id = currentsquad.st4 or player.id = currentsquad.st5 or player.id = currentsquad.st6 or player.id = currentsquad.st7 or player.id = currentsquad.st8 or player.id = currentsquad.st9 or player.id = currentsquad.st10 or player.id = currentsquad.g1 or player.id = currentsquad.g2 or player.id = currentsquad.s1 or player.id = currentsquad.s2 or player.id = currentsquad.s3 or player.id = currentsquad.r1 or player.id = currentsquad.r2 or player.id = currentsquad.r3
                                                 WHERE managersteam.id ='$teamId';" );
         return $results;
     }
     
+    // -- Purpose : get the squad value of a team
+    public function _getSquadValue($teamId)
+    {
+        $results = mysqli_query ( $this->con, "SELECT sum(player.value) as squadvalue
+                                                FROM managersteam
+                                                INNER JOIN currentsquad ON managersteam.id = currentsquad.teamId
+                                                INNER JOIN user ON user.id = managersteam.manager
+                                                INNER join player
+                                                    on player.id = currentsquad.st1 or player.id = currentsquad.st2 or player.id = currentsquad.st3 or player.id = currentsquad.st4 or player.id = currentsquad.st5 or player.id = currentsquad.st6 or player.id = currentsquad.st7 or player.id = currentsquad.st8 or player.id = currentsquad.st9 or player.id = currentsquad.st10 or player.id = currentsquad.g1 or player.id = currentsquad.g2 or player.id = currentsquad.s1 or player.id = currentsquad.s2 or player.id = currentsquad.s3 or player.id = currentsquad.r1 or player.id = currentsquad.r2 or player.id = currentsquad.r3
+                                                WHERE managersteam.id ='$teamId';" );
+        return $results;
+    }
+
+
+
     // -- Purpose : get details of a single player, including team name
     public function _getSinglePlayerDetails($playerId, $gameweek) 
     {
@@ -173,7 +190,7 @@ WHERE g1.gameweek = $gameweek and st1.gameweek = $gameweek and st2.gameweek = $g
     //gets next 3 games details for player
     public function _getNext3PlayersFixtures($plId, $gameweek)
     {
-        $results = mysqli_query ( $this->con, "SELECT clubmatch.gameweek, clubmatch.opponent, clubmatch.date
+        $results = mysqli_query ( $this->con, "SELECT clubmatch.gameweek, clubmatch.opponent, clubmatch.opponent_short, clubmatch.date
                                                 FROM player 
                                                 Inner join clubteam
                                                     on clubteam.id = player.teamId
@@ -216,10 +233,12 @@ WHERE g1.gameweek = $gameweek and st1.gameweek = $gameweek and st2.gameweek = $g
     //returns a list of all the users leagues and teams
     public function _loadUsersLeagues($id)
     {
-        $results = mysqli_query ( $this->con, "SELECT managersteam.*, fantasyleague.name as leagueName, fantasyleague.draftDate as draftDate, fantasyleague.draftTime as draftTime, fantasyleague.draftSelectionTime as draftSelectionTime, fantasyleague.status as status, fantasyleague.id as leagueId, fantasyleague.password as leaguePassword
+        $results = mysqli_query ( $this->con, "SELECT managersteam.*, fantasyleague.name as leagueName, fantasyleague.draftDate as draftDate, fantasyleague.draftTime as draftTime, fantasyleague.draftSelectionTime as draftSelectionTime, fantasyleague.status as status, fantasyleague.id as leagueId, fantasyleague.password as leaguePassword, draft.status as draftStatus
                                                 FROM managersteam 
                                                 INNER JOIN fantasyleague
                                                     ON managersteam.league = fantasyleague.id
+                                                INNER JOIN draft
+                                                    ON draft.leagueId = fantasyleague.id
                                                 WHERE manager = $id;" );
         return $results;
     }
@@ -228,12 +247,15 @@ WHERE g1.gameweek = $gameweek and st1.gameweek = $gameweek and st2.gameweek = $g
     public function _loadLeagueTable($id)
     {
         $results = mysqli_query ( $this->con, "SELECT managersteam. * , fantasyleague.name AS leagueName, fantasyleague.status AS 
-STATUS , fantasyleague.id AS leagueId, COUNT( fantasymatch.status ) AS gamesPlayed
+STATUS , fantasyleague.id AS leagueId, COUNT( fantasymatch.status ) AS gamesPlayed, sum(player.value) as squadvalue
                                                 FROM managersteam
+                                                INNER JOIN currentsquad ON managersteam.id = currentsquad.teamId
+                                                INNER join player
+                                                    on player.id = currentsquad.st1 or player.id = currentsquad.st2 or player.id = currentsquad.st3 or player.id = currentsquad.st4 or player.id = currentsquad.st5 or player.id = currentsquad.st6 or player.id = currentsquad.st7 or player.id = currentsquad.st8 or player.id = currentsquad.st9 or player.id = currentsquad.st10 or player.id = currentsquad.g1 or player.id = currentsquad.g2 or player.id = currentsquad.s1 or player.id = currentsquad.s2 or player.id = currentsquad.s3 or player.id = currentsquad.r1 or player.id = currentsquad.r2 or player.id = currentsquad.r3
                                                 INNER JOIN fantasyleague ON managersteam.league = fantasyleague.id
                                                 LEFT JOIN fantasymatch ON managersteam.id = fantasymatch.team1 AND fantasymatch.status = 2
                                                 OR managersteam.id = fantasymatch.team2 AND fantasymatch.status = 2
-                                                WHERE fantasyleague.id = $id 
+                                                WHERE fantasyleague.id = $id
                                                 GROUP BY managersteam.id
                                                 ORDER BY totalPoints desc, fantasyPoints desc, w desc, name;" );
         return $results;

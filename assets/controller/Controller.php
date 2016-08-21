@@ -38,7 +38,18 @@ class Controller {
 	{
 		if(isset($_SESSION['id']))
 		{
-            if (isset($_GET['squad']))
+            if (isset($_GET['admin']))
+            {
+				if($_SESSION['admin'] == 1)
+                {
+                    include('assets/view/admin.php');
+                }
+                else
+                {
+                    echo 'why are you here? <a href = "index.php?dash">Go Back</a>';
+                }
+            }
+            else if (isset($_GET['squad']))
             {
 				include('assets/view/squad.php');
             } 

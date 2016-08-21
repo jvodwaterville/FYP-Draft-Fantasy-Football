@@ -135,6 +135,7 @@ class league
                 <tr>
                     <th title="Position">Pos</th>
                     <th title="Team Name" class="teamName">Team</th> 
+                    <th title="Squad Value">Value</th>
                     <th title="Games Played">GP</th>
                     <th title="Wins">W</th>
                     <th title="Loses">L</th>
@@ -155,9 +156,15 @@ class league
                 echo '<tr>';
             }
         //continue printing out the first row
+        //add a decimal point to the value of player stored
+            //get position for the point tobe put in
+            $pos = strlen($row['squadvalue']) - 1;
+            //add point to string in position
+            $value = substr_replace($row['squadvalue'], '.', $pos, 0);
         echo '            
                     <td>1</td>
                     <td><a href="index.php?viewsquad='. $row['id'] .'&squadid='. $_GET['squadid'] .'">'. $row['name'] .'</a></td> 
+                    <td>£'. $value .'0</td>
                     <td>'. $row['gamesPlayed'] .'</td>
                     <td>'. $row['w'] .'</td>
                     <td>'. $row['l'] .'</td>
@@ -181,10 +188,15 @@ class league
                 {
                     echo '<tr>';
                 }
-                
+                //add a decimal point to the value of player stored
+                    //get position for the point tobe put in
+                    $pos = strlen($row['squadvalue']) - 1;
+                    //add point to string in position
+                    $value = substr_replace($row['squadvalue'], '.', $pos, 0);
             echo'
                     <td>'. $position .'</td>
                     <td><a href="index.php?viewsquad='. $row['id'] .'&squadid='. $_GET['squadid'] .'">'. $row['name'] .'</a></td> 
+                    <td>£'. $value .'0</td>
                     <td>'. $row['gamesPlayed'] .'</td>
                     <td>'. $row['w'] .'</td>
                     <td>'. $row['l'] .'</td>

@@ -5,6 +5,7 @@ class user
 	var $database;
 	var $name;
 	var $id;
+	var $admin;
 	
 	// -- Function Name : __construct
     // -- Params :
@@ -55,6 +56,7 @@ class user
                     if ( hash_equals($row['password'], crypt($password, $row['salt'])) ) 
                     {
                         $this->id     = $row['id'];
+                        $this->admin     = $row['admin'];
                         $this->name = $row['firstName']. " " .$row['lastName'];
                         $this->sessionCookies();
                         header("location: " . "http://" . $_SERVER['SERVER_NAME'] ."/index.php?dash=true");
@@ -177,7 +179,7 @@ class user
             while ($row = $result->fetch_assoc()) 
             {
                 //if league IS already started
-                if($row['status'] != 0)
+                if($row['draftStatus'] == 2)
                 {
                 echo '    
                     <div class="leagueHolder">
@@ -289,6 +291,7 @@ class user
 	{
         $_SESSION["id"] = $this->id;
         $_SESSION["name"] = $this->name;
+        $_SESSION["admin"] = $this->admin;
     }
     
 }

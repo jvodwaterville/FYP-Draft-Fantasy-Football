@@ -110,7 +110,7 @@ class player
             </div>
         </div>
         <div class="playerDetailsHolder" id="overviewHolder">
-            
+            <p class="whiteText">'. $row['news'] .'</p>
             <div id="playerImage">';
             //check if players image is saved
                 if(file_exists('assets/images/playerImages/'. $row['id'] .'.jpg'))
@@ -216,7 +216,7 @@ class player
                             echo '
                             <tr>
                                 <td>'. $last3Row["gameweek"] .'</td>
-                                <td>'. $last3Row["opponent"] .'</td> 
+                                <td>'. $last3Row["opponent_short"] .'</td>
                                 <td>'. $last3Row["date"] .'</td>
                             </tr> 
                             ';

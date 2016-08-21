@@ -161,6 +161,12 @@ class squad
         $result = $this->database->_loadSquad($id);
         $row = $result->fetch_assoc();
         
+        //add a decimal point to the value of player stored
+        //get position for the point tobe put in
+        $pos = strlen($row['squadvalue']) - 1;
+        //add point to string in position
+        $value = substr_replace($row['squadvalue'], '.', $pos, 0);
+
     //If the user IS the manager of the team
         if($row['managerId'] == $_SESSION['id'])
         {
@@ -168,8 +174,9 @@ class squad
             echo'
                 <div id="left60">
                 <div id="pitchHeader">
-                    <div class="halfWidth">
-                        <h2>' . $row['teamName'] . '</h2>
+                    <div class="halfWidth2">
+                        <p>Squad Value: £'. $value .'0m </p>
+                        <h3 title="' . $row['teamName'] . '">' . $row['teamName'] . '</h3><br>
                     </div>
                     <div class="halfWidth2">
                         <p>Next Opponent</p></br>'; 

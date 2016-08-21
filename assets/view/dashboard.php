@@ -27,6 +27,7 @@
                 <h2>My Leagues: </h2>
                 <div class="optionsButton" id="createLeague">Create League</div>
                 <div class="optionsButton" id="joinLeague">Join League</div>
+                <?php if ($_SESSION['admin'] == 1) {echo '<a class="leagueHolderButton" href = "index.php?admin">Admin</a>';} ?>
             </div>
 
 
