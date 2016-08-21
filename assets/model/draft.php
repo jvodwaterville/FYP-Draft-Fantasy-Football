@@ -685,7 +685,7 @@ class draft
             }   
 
             //set search options
-            $orderByString = "order by totalPoints desc, value desc";
+            $orderByString = "order by value desc, totalPoints desc";
             $premTeamString = "";
             $nameString = ""; 
             $positionString = ""; 

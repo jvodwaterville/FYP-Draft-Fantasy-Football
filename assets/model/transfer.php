@@ -514,6 +514,10 @@ class transfer
             //loop through and print out offer details
             while ($row = $result->fetch_assoc()) 
             {
+                //players in offer value holders
+                $playersOfferedValue = 0;
+                $playersRequestedValue = 0;
+
                 //get players involved in trade
                 $offeredPlayersResult =  $this->database->_getPlayersInHistory($row['id']);
                 $requestedPlayersResult =  $this->database->_getPlayersInHistory($row['id']);
@@ -533,21 +537,37 @@ class transfer
                 while ($offeredPlayersRow = $offeredPlayersResult->fetch_assoc()) 
                 {     
                     echo '<p class="playerName" id="'. $offeredPlayersRow['player1'] .'">'. $offeredPlayersRow['P1FN'] .' '. $offeredPlayersRow['P1LN'] .'</p>';
+                    $playersOfferedValue += $offeredPlayersRow['P1Value'];
                 }
+                    //add a decimal point to the value of player stored
+                        //get position for the point tobe put in
+                        $pos = strlen($playersOfferedValue) - 1;
+                        //add point to string in position
+                        $playersOfferedValue = substr_replace($playersOfferedValue, '.', $pos, 0);
 
-            echo'   </div>
+                echo '<br>Total Value: £'.$playersOfferedValue.'0m  </div>
                     <div class="offerColumn"><h3>Players Requested</h3>';
+                //reset value
+                $playersOfferedValue = 0;
 
                 //print out players requested in transfer offer
                 while ($requestedPlayersRow = $requestedPlayersResult->fetch_assoc()) 
                 {     
                     echo '<p class="playerName" id="'. $requestedPlayersRow['player2'] .'">'. $requestedPlayersRow['P2FN'] .' '. $requestedPlayersRow['P2LN'] .'</p>';
+                    $playersRequestedValue += $requestedPlayersRow['P2Value'];
                 }
-            echo'  </div>
+                    //add a decimal point to the value of player stored
+                        //get position for the point tobe put in
+                        $pos = strlen($playersRequestedValue) - 1;
+                        //add point to string in position
+                        $playersRequestedValue = substr_replace($playersRequestedValue, '.', $pos, 0);
+            echo '<br>Total Value: £'.$playersRequestedValue.'0m  </div>
                     <div class="offerColumn"><h3>Accepted By</h3><p>'. $row['team2Name'] .'</p></div>
                     <div class="clear"></div>
                 </div>
             ';
+                //reset value
+                $playersRequestedValue = 0;
             }
         }
         else

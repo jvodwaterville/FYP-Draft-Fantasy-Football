@@ -112,11 +112,13 @@ class database
     // -- Purpose : get the gameweek squad for a given team on a given gameweek
     public function _getGameweekSquad($teamId, $gameweek) 
     {
-        $results = mysqli_query ( $this->con, "SELECT gameweekteam.*, managersteam.manager as managerId, managersteam.name as teamName, user.id as managerId, user.firstName as firstName, user.lastName as lastName 
+        $results = mysqli_query ( $this->con, "SELECT gameweekteam.*, managersteam.manager as managerId, managersteam.name as teamName, user.id as managerId, user.firstName as firstName, user.lastName as lastName, sum(player.value) as squadvalue
                                                 FROM gameweekteam
                                                 INNER JOIN managersteam ON managersteam.id = gameweekteam.teamId
                                                 INNER JOIN user ON user.id = managersteam.manager
-                                                where gameweek = $gameweek and teamId = $teamId;" );
+                                                INNER join player
+                                                    on player.id = gameweekteam.st1 or player.id = gameweekteam.st2 or player.id = gameweekteam.st3 or player.id = gameweekteam.st4 or player.id = gameweekteam.st5 or player.id = gameweekteam.st6 or player.id = gameweekteam.st7 or player.id = gameweekteam.st8 or player.id = gameweekteam.st9 or player.id = gameweekteam.st10 or player.id = gameweekteam.g1 or player.id = gameweekteam.g2 or player.id = gameweekteam.s1 or player.id = gameweekteam.s2 or player.id = gameweekteam.s3
+                                                where gameweek = $gameweek and gameweekteam.teamId = $teamId;" );
         return $results;
     }
     
@@ -261,6 +263,22 @@ STATUS , fantasyleague.id AS leagueId, COUNT( fantasymatch.status ) AS gamesPlay
         return $results;
     }
     
+
+    //returns a list of all the leagues teams
+    public function _loadLeagueTableNoValue($id)
+    {
+        $results = mysqli_query ( $this->con, "SELECT managersteam. * , fantasyleague.name AS leagueName, fantasyleague.status AS
+STATUS , fantasyleague.id AS leagueId, COUNT( fantasymatch.status ) AS gamesPlayed
+                                                FROM managersteam
+                                                INNER JOIN fantasyleague ON managersteam.league = fantasyleague.id
+                                                LEFT JOIN fantasymatch ON managersteam.id = fantasymatch.team1 AND fantasymatch.status = 2
+                                                OR managersteam.id = fantasymatch.team2 AND fantasymatch.status = 2
+                                                WHERE fantasyleague.id = $id
+                                                GROUP BY managersteam.id
+                                                ORDER BY totalPoints desc, fantasyPoints desc, w desc, name;" );
+        return $results;
+    }
+
     //Create new league in database and return id
     public function _createLeague($leaguename, $password, $timeperpick,$admin)
     {
@@ -608,7 +626,7 @@ STATUS , fantasyleague.id AS leagueId
     //get players involved in transfer offer
     public function _getPlayersInHistory($historyId)
     {
-        $results = mysqli_query ( $this->con, "SELECT transferedplayers.*, player1.firstName as P1FN, player1.lastName as P1LN, player2.firstName as P2FN, player2.lastName as P2LN
+        $results = mysqli_query ( $this->con, "SELECT transferedplayers.*, player1.value as P1Value, player1.firstName as P1FN, player1.lastName as P1LN, player2.firstName as P2FN, player2.lastName as P2LN, player2.value as P2Value
                                                 FROM  transferedplayers 
                                                 INNER JOIN player AS player1 ON transferedplayers.player1 = player1.id
                                                 INNER JOIN player AS player2 ON transferedplayers.player2 = player2.id

@@ -966,7 +966,7 @@ class league
         $teams = array();
         
         //get all teams in league
-        $result =  $this->database->_loadLeagueTable($leagueId);
+        $result =  $this->database->_loadLeagueTableNoValue($leagueId);
         
         //add teams to arrays
         while($row = $result->fetch_assoc())

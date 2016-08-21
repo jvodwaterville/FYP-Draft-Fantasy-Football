@@ -459,7 +459,13 @@ class squad
         $s2 = $pointsRow['s2'];
         $s3 = $pointsRow['s3'];
         
-        
+        //add a decimal point to the value of player stored
+        //get position for the point tobe put in
+        $pos = strlen($pointsRow['squadvalue']) - 1;
+        //add point to string in position
+        $squadValue = substr_replace($pointsRow['squadvalue'], '.', $pos, 0);
+
+
         //loop through and save total points
         for($i=1; $i<11; $i++) 
         {        
@@ -538,8 +544,9 @@ class squad
             echo'
                 <div id="left60">
                 <div id="pitchHeader">
-                    <div class="thirdWidth">
-                        <h2>' . $row['teamName'] . '</h2>
+                    <div class="thirdWidth2">
+                        <p>Squad Value: £'. $squadValue .'0m </p><br>
+                        <h3>' . $row['teamName'] . '</h3>
                     </div>
                     <div class="thirdWidth2">';
                     //display - button as long as gamewwek is 2 or more
