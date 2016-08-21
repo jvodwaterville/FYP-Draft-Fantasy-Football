@@ -9,15 +9,10 @@
 
     <?php
         
-        /*$user = "root";
+        $user = "root";
         $password = "";
         $host = "127.0.0.1";
-        $database = "draftfantasyfootball";*/
-        
-        $user = "j565246_draftFF";
-        $password = "g@CcZ,QgVGKH";
-        $host = "127.0.0.1";
-        $database = "j565246_draftfantasyfootball";
+        $database = "draftfantasyfootball";
         
         $con = new mysqli ($host, $user, $password, $database );
     
@@ -39,7 +34,7 @@
 		for ($x = 1; $x <= $limit; $x++)
 		{
 		//check if url exists
-			$url = 'http://fantasy.premierleague.com/web/api/elements/' . $x . '/';
+			$url = 'https://fantasy.premierleague.com/drf/element-summary/' . $x;
 			$array = get_headers($url);
 			$string = $array[0];
 			//if it exists get the details
@@ -48,12 +43,22 @@
 				$jsonFile = file_get_contents($url);
 			
 				$jsonDecoded = json_decode($jsonFile, true);
-				$team_id = $jsonDecoded['team_id'];
+
+                $isHome = $jsonDecoded['fixtures'][0]["is_home"];
+                if($isHome == true)
+                {
+                    $team_id = $jsonDecoded['fixtures'][0]["team_h"];
+                }
+                else
+                {
+                    $team_id = $jsonDecoded['fixtures'][0]["team_a"];
+                }
+
                 
                 echo '<p>updating for ' .$team_id. '</p>';
                 
                 //get size of fixture history all array
-                $allSize = count($jsonDecoded['fixtures']['all']);
+                $allSize = count($jsonDecoded['fixtures']);
                 
                 //if the team being checked is different to the last team checked loop through fixtures
                 if($lastTeam != $team_id)
@@ -63,14 +68,23 @@
                     {
                         echo '<p>---------Game ' .$e. '</p>';
                         //get required details from array
-                        $date = $jsonDecoded['fixtures']['all'][$e][0];
-                        $gameweek = $jsonDecoded['fixtures']['all'][$e][1];
-                        $gameweek = substr($gameweek,9);
-                        $opponent = $jsonDecoded['fixtures']['all'][$e][2];
+                        $date = $jsonDecoded['fixtures'][$e]['kickoff_time_formatted'];
+                        $gameweek = $jsonDecoded['fixtures'][$e]['event'];
+                        $isHome = $jsonDecoded['fixtures'][$e]["is_home"];
+                        if($isHome == true)
+                        {
+                            $opponent = $jsonDecoded['fixtures'][$e]['opponent_name']. ' (H)';
+                            $opponentShort = $jsonDecoded['fixtures'][$e]['opponent_short_name']. ' (H)';
+                        }
+                        else
+                        {
+                            $opponent = $jsonDecoded['fixtures'][$e]['opponent_name']. ' (A)';
+                            $opponentShort = $jsonDecoded['fixtures'][$e]['opponent_short_name']. ' (A)';
+                        }
 
-                        //add Player to database
-                    mysqli_query ( $con,"INSERT INTO clubmatch (teamId, gameweek, date, opponent)
-                                        VALUES ('$team_id', '$gameweek', '$date', '$opponent');" );  
+                        //add Game to database
+                    mysqli_query ( $con,"INSERT INTO clubmatch (teamId, gameweek, date, opponent, opponent_short)
+                                        VALUES ('$team_id', '$gameweek', '$date', '$opponent', '$opponentShort');" );
                     }   
                 }
                 

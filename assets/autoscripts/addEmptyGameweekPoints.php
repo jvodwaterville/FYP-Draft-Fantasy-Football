@@ -8,15 +8,10 @@
 
     <?php
         
-        $user = "j565246_draftFF";
-        $password = "g@CcZ,QgVGKH";
-        $host = "127.0.0.1";
-        $database = "j565246_draftfantasyfootball";
-        
-        /*$user = "root";
+        $user = "root";
         $password = "";
         $host = "127.0.0.1";
-        $database = "draftfantasyfootball";*/
+        $database = "draftfantasyfootball";
     
         $con = new mysqli ($host, $user, $password, $database );
     
@@ -33,13 +28,13 @@
     
     //add blank points to db for all players in db for this gameweek
         //set var to highest number of players in loop
-		$limit = 1000;
+		$limit = 600;
 		
 		//loop through fantasy football json pages
 		for ($playerId = 1; $playerId <= $limit; $playerId++)
 		{
 		//check if url exists
-			$url = 'http://fantasy.premierleague.com/web/api/elements/' . $playerId . '/';
+			$url = 'https://fantasy.premierleague.com/drf/element-summary/'.$playerId;
 			$array = get_headers($url);
 			$string = $array[0];
 			//if it exists get the details
@@ -49,22 +44,24 @@
 				$jsonDecoded = json_decode($jsonFile, true);
                 
                 //get size of fixtures all array
-                $allSize = count($jsonDecoded['fixtures']['all']);
+                $allSize = count($jsonDecoded['fixtures_summary']);
+
+                echo $allSize;
                 
                 //loop through all array
                 for ($e = 0; $e < $allSize; $e++)
                 {
                 
                     //get required details from fixtures array
-                    $date = $jsonDecoded['fixtures']['all'][$e][0];
-                    $fixtureGameweek = $jsonDecoded['fixtures']['all'][$e][1];
-                    $opponent = $jsonDecoded['fixtures']['all'][$e][2];
+                    $date = $jsonDecoded['fixtures_summary'][$e]["kickoff_time_formatted"];
+                    $fixtureGameweek = $jsonDecoded['fixtures_summary'][$e]["event"];
+                    $opponent = $jsonDecoded['fixtures_summary'][$e]["opponent_name"];
 
-                    if($fixtureGameweek == "Gameweek ".$gameweek)
+                    if($fixtureGameweek == $gameweek)
                     {
                         //add Player Points to database
                         mysqli_query ( $con,"INSERT INTO points (gameweek, playerId, dateTime, opponentResult, mp, gs, a, cs, gc, og, ps, pm, yc, rc, s, b, total)
-                                           VALUES ('$gameweek', '$playerId', '$date', '$opponent', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');" );
+                                           VALUES ('$fixtureGameweek', '$playerId', '$date', '$opponent', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');" );
                     }
                     
                     

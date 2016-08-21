@@ -235,7 +235,7 @@ STATUS , fantasyleague.id AS leagueId, COUNT( fantasymatch.status ) AS gamesPlay
                                                 OR managersteam.id = fantasymatch.team2 AND fantasymatch.status = 2
                                                 WHERE fantasyleague.id = $id 
                                                 GROUP BY managersteam.id
-                                                ORDER BY totalPoints desc, fantasyPoints desc, name;" );
+                                                ORDER BY totalPoints desc, fantasyPoints desc, w desc, name;" );
         return $results;
     }
     

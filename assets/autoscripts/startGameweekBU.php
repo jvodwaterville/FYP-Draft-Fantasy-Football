@@ -7,11 +7,7 @@
 <body>
 
     <?php
-        
-        /*$user = "j565246_draftFF";
-        $password = "g@CcZ,QgVGKH";
-        $host = "127.0.0.1";
-        $database = "j565246_draftfantasyfootball";*/
+
         
         $user = "root";
         $password = "";

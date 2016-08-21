@@ -895,7 +895,7 @@ class draft
             } 
             else 
             { 
-                $orderByString = "order by totalPoints desc";
+                $orderByString = "order by totalPoints desc, value desc";
             };
 
             //get pagination details

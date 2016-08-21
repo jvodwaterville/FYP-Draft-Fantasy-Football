@@ -8,17 +8,82 @@
 <body>
 
     <?php
-        
+    //database connection
+        $user = "root";
+        $password = "";
+        $host = "127.0.0.1";
+        $database = "draftfantasyfootball";
+        $con = new mysqli ($host, $user, $password, $database );
+
+    //check if url exists
+	   $url = 'https://fantasy.premierleague.com/drf/bootstrap-static';
+	   $array = get_headers($url);
+	   $string = $array[0];
+	   //if it exists get the details
+	   if(strpos($string,"200"))
+	   {
+            $jsonFile = file_get_contents($url);
+
+            $jsonDecoded = json_decode($jsonFile, true);
+
+        	$players = $jsonDecoded['elements'];
+        	$teams = $jsonDecoded['teams'];
+
+           for($i = 0; $i < count($players); $i++) {
+
+                $id = $players[$i]['id'];
+				$team_id = $players[$i]['team'];
+				$first_name = $players[$i]['first_name'];
+				$second_name = $players[$i]['second_name'];
+				$value = $players[$i]['now_cost'];
+				$webName = $players[$i]['web_name'];
+
+				$news = $players[$i]['news'];
+
+                if($players[$i]['element_type'] == 1)
+                {
+                    $position = 'Goalkeeper';
+                }
+                else if($players[$i]['element_type'] == 2)
+                {
+                    $position = 'Defender';
+                }
+                else if($players[$i]['element_type'] == 3)
+                {
+                    $position = 'Midfielder';
+                }
+                else
+                {
+                    $position = 'Forward';
+                }
+
+
+               //add Player to database
+               mysqli_query ( $con,"INSERT INTO player (id, teamId, firstName, lastName, position, value, news, webName)
+									VALUES ('$id', '$team_id', '$first_name', '$second_name', '$position', '$value',
+									'$news', '$webName');" );
+
+
+				echo '<p> ID: ' . $id . '  Team ID: ' . $team_id . '  Name: '  . $first_name . '  ' . $second_name . ' Pos: ' . $position .  '  £' . $value .  '  News: ' . $news . ' INSERTED!</p>';
+
+            }
+
+       }
+       else
+       {
+           echo 'nope';
+       }
+
+
+
+
+
+
         /*$user = "root";
         $password = "";
         $host = "127.0.0.1";
         $database = "draftfantasyfootball";
-        $con = new mysqli ($host, $user, $password, $database );*/
-        
-        $user = "j565246_draftFF";
-        $password = "g@CcZ,QgVGKH";
-        $host = "127.0.0.1";
-        $database = "j565246_draftfantasyfootball";
+        $con = new mysqli ($host, $user, $password, $database );
         
     
 		//remove php Maximum execution time limit
@@ -31,7 +96,7 @@
 		for ($x = 1; $x <= $limit; $x++)
 		{
 		//check if url exists
-			$url = 'http://fantasy.premierleague.com/web/api/elements/' . $x . '/';
+			$url = 'http://fantasy.premierleague.com/drf/bootstrap-static';
 			$array = get_headers($url);
 			$string = $array[0];
 			//if it exists get the details
@@ -77,7 +142,7 @@
                 echo '<br>';
                 $content = "http://cdn.ismfg.net/static/plfpl/img/shirts/photos/".$photo;
                 
-                copy("http://cdn.ismfg.net/static/plfpl/img/shirts/photos/".$photo, 'C:\xampp\htdocs\draftFantasyFootball\assets\images\playerImages\\'. $id .'.jpg');*/
+                copy("http://cdn.ismfg.net/static/plfpl/img/shirts/photos/".$photo, 'C:\xampp\htdocs\draftFantasyFootball\assets\images\playerImages\\'. $id .'.jpg');
                 
 			} 
 			else 
@@ -86,7 +151,7 @@
 				$limit = $x;
 			}
 		
-		}
+		}*/
 		
 		?>
 

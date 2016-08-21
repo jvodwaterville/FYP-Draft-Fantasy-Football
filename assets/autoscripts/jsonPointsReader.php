@@ -8,16 +8,13 @@
 <body>
 
     <?php
+
         
-        $user = "j565246_draftFF";
-        $password = "g@CcZ,QgVGKH";
-        $host = "127.0.0.1";
-        $database = "j565246_draftfantasyfootball";
-        
-        /*$user = "root";
+
+        $user = "root";
         $password = "";
         $host = "127.0.0.1";
-        $database = "draftfantasyfootball";*/
+        $database = "draftfantasyfootball";
         
         $con = new mysqli ($host, $user, $password, $database );
         
@@ -31,10 +28,10 @@
 		//loop through fantasy football json pages
 		for ($playerId = 1; $playerId <= $limit; $playerId++)
 		{
-            echo '<p>'+$playerId+'</p>';
+            echo '<p>'+$playerId+'</p></br>';
             
 		//check if url exists
-			$url = 'http://fantasy.premierleague.com/web/api/elements/' . $playerId . '/';
+			$url = 'https://fantasy.premierleague.com/drf/element-summary/' . $playerId;
 			$array = get_headers($url);
 			$string = $array[0];
 			//if it exists get the details
@@ -44,7 +41,7 @@
 				$jsonDecoded = json_decode($jsonFile, true);
                 
                 //get size of fixture history all array
-                $allSize = count($jsonDecoded['fixture_history']['all']);
+                $allSize = count($jsonDecoded['history']);
                 
                 //get current date
                 $date = date('y-m-d');
@@ -52,35 +49,52 @@
                 //get current gameweek based on date
                 $gwResults = mysqli_query ( $con, "SELECT * FROM gameweek where '$date' between startDate and endDate;" );
                 $gwRow = $gwResults->fetch_assoc();
-                $todaysGameweek = $gwRow['id'];
+                $todaysGameweek = $gwRow['id'];;
 				
                 //loop through all array
                 for ($e = 0; $e < $allSize; $e++)
                 {
                     //get required details from array
-                    $date = $jsonDecoded['fixture_history']['all'][$e][0];
-                    $playerGameweek = $jsonDecoded['fixture_history']['all'][$e][1];
-                    $opponent = $jsonDecoded['fixture_history']['all'][$e][2];
-                    $minutesPlayed = $jsonDecoded['fixture_history']['all'][$e][3];
-                    $GoalsScored = $jsonDecoded['fixture_history']['all'][$e][4];
-                    $assists = $jsonDecoded['fixture_history']['all'][$e][5];
-                    $cleansheets = $jsonDecoded['fixture_history']['all'][$e][6];
-                    $goalsConceded = $jsonDecoded['fixture_history']['all'][$e][7];
-                    $ownGoals = $jsonDecoded['fixture_history']['all'][$e][8];
-                    $penaltiesSaved = $jsonDecoded['fixture_history']['all'][$e][9];
-                    $penaltiesMissed = $jsonDecoded['fixture_history']['all'][$e][10];
-                    $yellowCards = $jsonDecoded['fixture_history']['all'][$e][11];
-                    $redCards = $jsonDecoded['fixture_history']['all'][$e][12];
-                    $savesMade = $jsonDecoded['fixture_history']['all'][$e][13];
-                    $bonus = $jsonDecoded['fixture_history']['all'][$e][14];
-                    $value = $jsonDecoded['fixture_history']['all'][$e][18];
-                    $points = $jsonDecoded['fixture_history']['all'][$e][19];
+                    $date = $jsonDecoded['history'][$e]["kickoff_time_formatted"];
+                    $playerGameweek = $jsonDecoded['history'][$e]["round"];
+
+                    $opponent = $jsonDecoded['history'][$e]["opponent_team"];
+                    $wasHome = $jsonDecoded['history'][$e]["was_home"];
+                    $homeScore = $jsonDecoded['history'][$e]["team_h_score"];
+                    $awayScore = $jsonDecoded['history'][$e]["team_a_score"];
+                    if($wasHome == true)
+                    {
+                        $homeString = "(H) ".$homeScore."-".$awayScore;
+                    }
+                    else
+                    {
+                        $homeString = "(A) ".$awayScore."-".$homeScore;
+                    }
+                    $opponentNameResults = mysqli_query ( $con, "SELECT * FROM clubteam where id = '$opponent';" );
+                    $opponentNameRow = $opponentNameResults->fetch_assoc();
+                    $opponentName = $opponentNameRow['shortName'];
+                    $opponentString = $opponentName." ".$homeString;
+
+                    $minutesPlayed = $jsonDecoded['history'][$e]["minutes"];
+                    $GoalsScored = $jsonDecoded['history'][$e]["goals_scored"];
+                    $assists = $jsonDecoded['history'][$e]["assists"];
+                    $cleansheets = $jsonDecoded['history'][$e]["clean_sheets"];
+                    $goalsConceded = $jsonDecoded['history'][$e]["goals_conceded"];
+                    $ownGoals = $jsonDecoded['history'][$e]["own_goals"];
+                    $penaltiesSaved = $jsonDecoded['history'][$e]["penalties_saved"];
+                    $penaltiesMissed = $jsonDecoded['history'][$e]["penalties_missed"];
+                    $yellowCards = $jsonDecoded['history'][$e]["yellow_cards"];
+                    $redCards = $jsonDecoded['history'][$e]["red_cards"];
+                    $savesMade = $jsonDecoded['history'][$e]["saves"];
+                    $bonus = $jsonDecoded['history'][$e]["bonus"];
+                    $value = $jsonDecoded['history'][$e]["value"];
+                    $points = $jsonDecoded['history'][$e]["total_points"];
 
                     //check to see if the match date is the same as todays date, if it is add to database
                     if($playerGameweek == $todaysGameweek)
                     {
                         //update players points details in db
-                        mysqli_query ( $con,"UPDATE points SET opponentResult='$opponent', mp='$minutesPlayed', gs='$GoalsScored', a='$assists', cs='$cleansheets', gc='$goalsConceded', og='$ownGoals', ps='$penaltiesSaved', pm='$penaltiesMissed', yc='$yellowCards', rc='$redCards', s='$savesMade', b='$bonus', total='$points' WHERE playerId = $playerId and dateTime = '$date';" );
+                        mysqli_query ( $con,"UPDATE points SET gameweek='$playerGameweek', opponentResult='$opponentString', mp='$minutesPlayed', gs='$GoalsScored', a='$assists', cs='$cleansheets', gc='$goalsConceded', og='$ownGoals', ps='$penaltiesSaved', pm='$penaltiesMissed', yc='$yellowCards', rc='$redCards', s='$savesMade', b='$bonus', total='$points' WHERE playerId = $playerId and dateTime = '$date';" );
                     }  
 
                 }
