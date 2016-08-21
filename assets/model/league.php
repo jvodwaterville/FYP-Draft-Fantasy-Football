@@ -16,15 +16,13 @@ class league
         //get league details from form
         $leaguename = $_GET['leaguename'];
         $password = $_GET['password'];
-        $date = $_GET['date'];
-        $time = $_GET['time'];
         $timeperpick = $_GET['timeperpick'];
         
         //admin will be user creating league
         $admin = $_SESSION['id'];
         
         //create league in database and return leagues id
-        $result =  $this->database->_createLeague($leaguename, $password, $date, $time, $timeperpick,$admin);
+        $result =  $this->database->_createLeague($leaguename, $password, $timeperpick,$admin);
         
         //get team name from form
         $teamname = $_GET['teamname'];

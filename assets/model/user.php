@@ -234,7 +234,7 @@ class user
                     <div class="leagueHolder">
                         <div class="leagueHolderHeader">'. $row['leagueName'] .'</div>
                         <p>'. $row['name'] .'</p>
-                        <p>Draft Date '. $day .' @  '. date('g:ia', strtotime($row['draftTime'])) .'</p>
+                        <p>Admin Manually Starts Draft</p>
                         <p>League Id = '. $row['leagueId'] .' & Password = '. $row['leaguePassword'] .'</p>
                         <div class="leagueHolderButton"><a class="blockLink" href="index.php?draft=true&squadid='. $row['id'].'">Draft Page</a></div>
 

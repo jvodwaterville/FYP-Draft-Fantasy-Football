@@ -11,20 +11,16 @@ function checkCreateLeagueForm() {
     //get lengths of the input fields in form
     var createLeagueName = $("#createLeagueName").val().length;
     var createLeaguePassword = $("#createLeaguePassword").val().length;
-    var createLeagueDate = $("#createLeagueDate").val().length;
-    var createLeagueTime = $("#createLeagueTime").val().length;
     var createLeagueTeamName = $("#createLeagueTeamName").val().length;
 
     //if they are all longer than 0 they have all been filled in so submit form
-    if (createLeagueName != 0 && createLeaguePassword != 0 && createLeagueDate != 0 && createLeagueTime != 0 && createLeagueTeamName != 0) {
+    if (createLeagueName != 0 && createLeaguePassword != 0 && createLeagueTeamName != 0) {
         //data string holder
         var data = "";
 
         //get set up datastring from inputs
         data = data + "&leaguename=" + $("#createLeagueName").val();
         data = data + "&password=" + $("#createLeaguePassword").val();
-        data = data + "&date=" + $("#createLeagueDate").val();
-        data = data + "&time=" + $("#createLeagueTime").val();
         data = data + "&timeperpick=" + $("#createLeagueTimePerPick").val();
         data = data + "&teamname=" + $("#createLeagueTeamName").val();
 

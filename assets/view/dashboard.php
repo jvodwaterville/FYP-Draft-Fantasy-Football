@@ -39,14 +39,9 @@
                     <label>League Password:</label>
                     <input type="text" id="createLeaguePassword" name="password" placeholder="password" required>
                     <br>
-                    <label>Draft Date:</label>
-                    <input type="date" id="createLeagueDate" name="date" required>
-                    <br>
-                    <label>Draft Time:</label>
-                    <input type="time" id="createLeagueTime" name="time" required>
-                    <br>
                     <label>Time Per Draft Pick:</label>
                     <select id="createLeagueTimePerPick" name="timeperpick" required>
+                        <option value="1">1 Second Quick Pick Draft</option>
                         <option value="30">30 secs</option>
                         <option value="60" selected>1 min</option>
                         <option value="120">2 mins</option>

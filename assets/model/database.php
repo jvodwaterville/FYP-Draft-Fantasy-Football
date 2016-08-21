@@ -262,10 +262,10 @@ STATUS , fantasyleague.id AS leagueId, COUNT( fantasymatch.status ) AS gamesPlay
     }
     
     //Create new league in database and return id
-    public function _createLeague($leaguename, $password, $date, $time, $timeperpick,$admin)
+    public function _createLeague($leaguename, $password, $timeperpick,$admin)
     {
-        mysqli_query ( $this->con, "INSERT INTO fantasyleague (name,password,draftDate,draftTime,draftSelectionTime,admin)
-                                              VALUES ('$leaguename','$password','$date','$time','$timeperpick','$admin')" );
+        mysqli_query ( $this->con, "INSERT INTO fantasyleague (name,password,draftSelectionTime,admin)
+                                              VALUES ('$leaguename','$password','$timeperpick','$admin')" );
         
         $id = mysqli_insert_id($this->con);
         
@@ -568,7 +568,7 @@ STATUS , fantasyleague.id AS leagueId
     //get players involved in transfer offer
     public function _getPlayersInOffer($offerId)
     {
-        $results = mysqli_query ( $this->con, "SELECT offeredplayers.*, player1.firstName as P1FN, player1.lastName as P1LN, player2.firstName as P2FN, player2.lastName as P2LN
+        $results = mysqli_query ( $this->con, "SELECT offeredplayers.*, player1.firstName as P1FN, player1.value as P1Value, player1.lastName as P1LN, player2.firstName as P2FN, player2.lastName as P2LN, player2.value as P2Value
                                                 FROM  offeredplayers 
                                                 INNER JOIN player AS player1 ON offeredplayers.player1 = player1.id
                                                 INNER JOIN player AS player2 ON offeredplayers.player2 = player2.id

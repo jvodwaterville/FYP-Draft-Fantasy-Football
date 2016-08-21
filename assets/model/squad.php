@@ -175,7 +175,7 @@ class squad
                 <div id="left60">
                 <div id="pitchHeader">
                     <div class="halfWidth2">
-                        <p>Squad Value: £'. $value .'0m </p>
+                        <p>Squad Value: £'. $value .'0m </p><br>
                         <h3 title="' . $row['teamName'] . '">' . $row['teamName'] . '</h3><br>
                     </div>
                     <div class="halfWidth2">

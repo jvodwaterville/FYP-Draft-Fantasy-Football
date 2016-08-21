@@ -188,7 +188,10 @@ class transfer
         //If the user IS the manager of the team
         if($teamsLeagueRow['managerid'] == $_SESSION['id'])
         {
-        
+            //players in offer value holders
+            $playersOfferedValue = 0;
+            $playersRequestedValue = 0;
+
             //search for open offers
             $result =  $this->database->_getOpenOffers($teamId);
             //count number of rows returned to see if any open offers exist
@@ -212,17 +215,38 @@ class transfer
                     while ($offeredPlayersRow = $offeredPlayersResult->fetch_assoc()) 
                     {     
                         echo '<p class="playerName" id="'. $offeredPlayersRow['player1'] .'">'. $offeredPlayersRow['P1FN'] .' '. $offeredPlayersRow['P1LN'] .'</p>';
+                        $playersOfferedValue += $offeredPlayersRow['P1Value'];
                     }
+                    //add a decimal point to the value of player stored
+                        //get position for the point tobe put in
+                        $pos = strlen($playersOfferedValue) - 1;
+                        //add point to string in position
+                        $playersOfferedValue = substr_replace($playersOfferedValue, '.', $pos, 0);
 
-                echo'   </div>
+                echo '<br>Total Value: £'.$playersOfferedValue.'0m  </div>
                         <div class="offerColumn"><h3>Players Requested</h3>';
+
+                    //reset value
+                    $playersOfferedValue = 0;
 
                     //print out players requested in transfer offer
                     while ($requestedPlayersRow = $requestedPlayersResult->fetch_assoc()) 
                     {     
                         echo '<p class="playerName" id="'. $requestedPlayersRow['player2'] .'">'. $requestedPlayersRow['P2FN'] .' '. $requestedPlayersRow['P2LN'] .'</p>';
+                        $playersRequestedValue += $requestedPlayersRow['P2Value'];
                     }
-                echo'  </div>';
+
+                    //add a decimal point to the value of player stored
+                        //get position for the point tobe put in
+                        $pos = strlen($playersRequestedValue) - 1;
+                        //add point to string in position
+                        $playersRequestedValue = substr_replace($playersRequestedValue, '.', $pos, 0);
+
+                echo '<br>Total Value: £'.$playersRequestedValue.'0m  </div>';
+
+                    //reset value
+                    $playersRequestedValue = 0;
+
                     //write different offered to/By info based on who the offer was made by
                     if($row['team1Manager'] == $_SESSION['id'])
                     {
